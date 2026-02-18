@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->integer('age');
+            $table->string('password');
             $table->string('email')->unique();
             $table->foreignId('designation_id')
                   ->nullable()

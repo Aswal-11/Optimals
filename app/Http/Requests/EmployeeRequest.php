@@ -20,9 +20,10 @@ class EmployeeRequest extends FormRequest
         return [
             'name' => ['required', 'regex:/^[A-Za-z\s]+$/', 'max:255'],
             'age' => ['required', 'integer', 'min:18'],
+            'password' => ['required','min:6','confirmed'],
             'email' => ['required', 'email', 'unique:employees,email'],
             'designation_id' => ['nullable', 'exists:designations,id'],
-            'salary' => ['required', 'numeric', 'min:0'],
+            'salary' => ['required', 'numeric', 'min:0','max:99999999.99'],
         ];
     }
 

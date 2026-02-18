@@ -2,10 +2,20 @@
 
 namespace App\Http\Controllers;
 
+// Models
 use App\Models\Admin;
+
+// Requests
 use Illuminate\Http\Request;
+use App\Http\Requests\AdminRequest;
+use App\Http\Requests\LoginAuthenticateRequest;
+
+// Authentication
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+
+// Session
+use Illuminate\Support\Facades\Session;
 
 class AdminController extends Controller
 {
@@ -14,16 +24,15 @@ class AdminController extends Controller
         return view('admin.login');
     }
 
-    public function authenticate(Request $request)
+    // Authenticate admin credentials and Login
+    public function authenticate(LoginAuthenticateRequest $request)
     {
-        $credentials = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
+        $credentials = $request->validated();
 
         if (Auth::guard('admin')->attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->route('admin.dashboard')->with('success', 'Logged in successfully');
+            Session::flash('success', 'Admin logged in successfully.');
+            return redirect()->route('admin.dashboard');
         }
 
         return back()->withErrors(['email' => 'Invalid credentials'])->onlyInput('email');
@@ -48,30 +57,16 @@ class AdminController extends Controller
         return redirect('/')->with('success', 'Logged out successfully');
     }
 
-    public function store(Request $request)
+    public function store(AdminRequest $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:admins,email',
-            'password' => 'required|min:6|confirmed',
-        ]);
-
+        $request->validated();
         Admin::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
 
-        return redirect()->route('admin.dashboard')
-            ->with('success', 'New Admin Created Successfully');
-    }
-
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
+        return redirect()->route('admin.dashboard')->with('success', 'New Admin Created Successfully');
     }
 
     /**

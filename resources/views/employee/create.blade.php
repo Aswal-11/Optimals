@@ -28,6 +28,25 @@
                 @enderror
             </div>
 
+            <div class="mb-4">
+                <label class="block mb-1">Password</label>
+                <input type="password" name="password"
+                    class="w-full border rounded px-3 py-2">
+                @error('password')
+                    <p class="text-red-500 text-sm">{{ $message }}</p>
+                @enderror
+            </div>
+
+            {{-- Password Confirmation --}}
+            <div class="mb-4">
+                <label class="block mb-1">Confirm Password</label>
+                <input type="password" name="password_confirmation"
+                    class="w-full border rounded px-3 py-2">
+                @error('password_confirmation')
+                    <p class="text-red-500 text-sm">{{ $message }}</p>
+                @enderror
+            </div>
+
             {{-- Email --}}
             <div class="mb-4">
                 <label class="block mb-1">Email</label>
@@ -67,9 +86,24 @@
                 @enderror
             </div>
 
-            <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-                Submit
-            </button>
+            <div class="flex gap-4">
+                <button type="submit" class="flex-1 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+                    Submit
+                </button>
+
+                @if (Auth::guard('employee')->check())
+                    <form action="{{ route('employee.logout') }}" method="POST" class="flex-1">
+                        @csrf
+                        <button type="submit" class="w-full bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">
+                            Logout
+                        </button>
+                    </form>
+                @elseif (Auth::guard('admin')->check())
+                    <a href="{{ route('admin.dashboard') }}" class="flex-1 bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700 text-center">
+                        Back
+                    </a>
+                @endif
+            </div>
         </form>
     </div>
 

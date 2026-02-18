@@ -20,7 +20,7 @@ class DesignationRequest extends FormRequest
         return [
             'title' => ['required', 'regex:/^[A-Za-z\s]+$/', 'max:255', 'unique:designations,title'],
             'description' => ['required', 'string'],
-            'skill_id' => ['nullable', 'exists:skills,id'],
+            'skill_id' => ['nullable', 'array', 'exists:skills,id'],
         ];
     }
 

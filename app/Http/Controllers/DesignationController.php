@@ -40,15 +40,17 @@ class DesignationController extends Controller
         $skill_ids = $input['skill_id'] ?? [];
         unset($input['skill_id']);
 
-        if ($input && ! empty($skill_ids)) {
+        if ($input) {
             $designation = Designation::create($input);
-            $designation->skills()->attach($skill_ids);
+            if (!empty($skill_ids)) {
+                $designation->skills()->attach($skill_ids);
+            }
             Session::flash('success', 'Designation created successfully.');
         }else{
             Session::flash('failed', 'Failed to create the designation');
         }
 
-        return view('welcome');
+        return redirect()->route('admin.dashboard');
     }
 
     /**
