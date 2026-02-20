@@ -3,16 +3,19 @@
 namespace App\Http\Controllers;
 
 // Models
-use App\Http\Requests\EmployeeAuthenticateRequest;
+use App\Models\Employee;
+use App\Models\Designation;
+
+// Requests
+use Illuminate\Http\Request;
 use App\Http\Requests\EmployeeRequest;
 use App\Http\Requests\EmployeeUpdateRequest;
-// Requests
-use App\Models\Designation;
-use App\Models\Employee;
-use Illuminate\Http\Request;
+use App\Http\Requests\EmployeeAuthenticateRequest;
+
 // Authentication
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+
 // Session
 use Illuminate\Support\Facades\Session;
 
