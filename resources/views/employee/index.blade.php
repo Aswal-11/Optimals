@@ -11,7 +11,8 @@
                 <a href="/admin/dashboard" class="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700">
                     Back
                 </a>
-                <a class="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700" href="{{ route('employee.create') }}">Create employee</a>
+                <a class="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700"
+                    href="{{ route('employee.create') }}">Create employee</a>
             </div>
         </div>
 
@@ -25,6 +26,8 @@
                     <th class="p-2 border">Designation</th>
                     <th class="p-2 border">Salary</th>
                     <th class="p-2 border">View Profile</th>
+                    <th class="p-2 border">Update</th>
+                    <th class="p-2 border">Delete</th>
                 </tr>
             </thead>
             <tbody>
@@ -50,6 +53,15 @@
                                 class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700 text-sm">
                                 Update
                             </a>
+                        </td>
+                        <td class="p-2 border">
+                            <form action="{{ route('employee.delete', $employee->id) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="bg-red-600 text-white px-3 py-1 rounded">
+                                    Delete
+                                </button>
+                            </form>
                         </td>
                     </tr>
 

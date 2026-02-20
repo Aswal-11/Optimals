@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 // Models
 use App\Http\Requests\EmployeeAuthenticateRequest;
 use App\Http\Requests\EmployeeRequest;
+use App\Http\Requests\EmployeeUpdateRequest;
 // Requests
 use App\Models\Designation;
 use App\Models\Employee;
@@ -131,46 +132,33 @@ class EmployeeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Employee $employee)
+    public function update(EmployeeUpdateRequest $request, Employee $employee)
     {
         // Validation
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'age' => 'required|integer|min:18',
-            'email' => 'required|email|unique:employees,email,'.$employee->id,
-            'designation_id' => 'required|exists:designations,id',
-            'salary' => 'required|numeric|min:0',
-            'password' => 'nullable|confirmed|min:6',
-        ]);
-
-        // Data collect karo
-        $data = $request->only([
-            'name',
-            'age',
-            'email',
-            'designation_id',
-            'salary',
-        ]);
+        $input = $request->validated();
 
         // Agar password fill kiya hai to update karo
         if ($request->filled('password')) {
-            $data['password'] = bcrypt($request->password);
+            $input['password'] = bcrypt($request->password);
         }
 
         // Update employee
-        $employee->update($data);
+        $employee->update($input);
 
-        return redirect()
-            ->route('employee.index')
-            ->with('success', 'Employee updated successfully');
+        Session::flash('success', 'Employee updated successfully.');
+
+        return redirect()->route('employee.index');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Employee $employee)
+    public function delete(Employee $employee)
     {
-        //
+        $employee->delete();
+
+        return redirect()->route('employee.index')
+            ->with('success', 'Employee deleted successfully.');
     }
 
     /**

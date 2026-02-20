@@ -51,7 +51,8 @@ Route::middleware(\App\Http\Middleware\AdminMiddleware::class)->group(function (
     Route::get('/employee/index', [EmployeeController::class, 'index'])->name('employee.index');
     Route::get('/employees/{employee}', [EmployeeController::class, 'profile'])->name('employees.profile');
     Route::get('/employee/{employee}/edit', [EmployeeController::class, 'edit'])->name('employee.edit');
-    Route::put('/employee/{employee}', [EmployeeController::class, 'update'])->name('employee.update');
+    Route::patch('/employee/{employee}', [EmployeeController::class, 'update'])->name('employee.update');
+    Route::delete('/employee/{employee}', [EmployeeController::class, 'delete'])->name('employee.delete');
 
     // Designation Routes
     Route::get('/designation/create', [DesignationController::class, 'create'])->name('designation.create');

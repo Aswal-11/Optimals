@@ -9,7 +9,7 @@
 
     <form action="{{ route('employee.update', $employee->id) }}" method="POST">
         @csrf
-        @method('PUT')
+        @method('PATCH')
 
         {{-- Name --}}
         <div class="mb-4">
@@ -48,6 +48,7 @@
         <div class="mb-4">
             <label class="block mb-1">New Password (Optional)</label>
             <input type="password" name="password"
+                value="{{ old('password', $employee->password) }}"
                 class="w-full border rounded px-3 py-2">
             @error('password')
                 <p class="text-red-500 text-sm">{{ $message }}</p>
@@ -58,6 +59,7 @@
         <div class="mb-4">
             <label class="block mb-1">Confirm Password</label>
             <input type="password" name="password_confirmation"
+                value="{{ old('password', $employee->password) }}"
                 class="w-full border rounded px-3 py-2">
         </div>
 
