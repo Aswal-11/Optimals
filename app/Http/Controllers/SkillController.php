@@ -3,12 +3,10 @@
 namespace App\Http\Controllers;
 
 // Models
-use App\Models\Skill;
-
-// Request
 use App\Http\Requests\SkillRequest;
+// Request
+use App\Models\Skill;
 use Illuminate\Http\Request;
-
 // Session
 use Illuminate\Support\Facades\Session;
 
@@ -36,16 +34,16 @@ class SkillController extends Controller
     public function store(SkillRequest $request)
     {
         $input = $request->validated();
-        
+
         if ($input) {
             Skill::create($input);
             Session::flash('success', 'Skill created successfully.');
 
-            return view('welcome');
+            return redirect()->route('admin.dashboard');
         } else {
             Session::flash('error', 'Failed to create Skill.');
 
-            return view('welcome');
+            return redirect()->route('admin.dashboard');
         }
     }
 

@@ -3,18 +3,15 @@
 namespace App\Http\Controllers;
 
 // Models
-use App\Models\Designation;
-use App\Models\Employee;
-
-// Requests
-use Illuminate\Http\Request;
 use App\Http\Requests\EmployeeAuthenticateRequest;
 use App\Http\Requests\EmployeeRequest;
-
+// Requests
+use App\Models\Designation;
+use App\Models\Employee;
+use Illuminate\Http\Request;
 // Authentication
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-
 // Session
 use Illuminate\Support\Facades\Session;
 
@@ -28,7 +25,9 @@ class EmployeeController extends Controller
         return view('employee.authenticate.employee_login');
     }
 
-    // Authenticate employee credentials and Login
+    /**
+     * Emoloyee authentication
+     */
     public function authenticate(EmployeeAuthenticateRequest $request)
     {
         $credentials = $request->validated();
@@ -36,6 +35,7 @@ class EmployeeController extends Controller
         if (Auth::guard('employee')->attempt($credentials)) {
             $request->session()->regenerate();
             Session::flash('success', 'Employee logged in successfully.');
+
             return redirect()->intended(route('employee.profile'));
         }
 
@@ -49,6 +49,7 @@ class EmployeeController extends Controller
     {
         $employee = Auth::guard('employee')->user();
         $employee->load('designation.skills');
+
         return view('employee.profile', compact('employee'));
     }
 
@@ -58,6 +59,7 @@ class EmployeeController extends Controller
     public function profile(Employee $employee)
     {
         $employee->load('designation.skills');
+
         return view('employee.profile', compact('employee'));
     }
 
@@ -66,10 +68,11 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        if (!Auth::guard('admin')->check()) {
+        if (! Auth::guard('admin')->check()) {
             abort(403, 'Unauthorized');
         }
         $employees = Employee::with('designation')->get();
+
         return view('employee.index', compact('employees'));
     }
 
@@ -78,10 +81,11 @@ class EmployeeController extends Controller
      */
     public function create()
     {
-        if (!Auth::guard('admin')->check()) {
+        if (! Auth::guard('admin')->check()) {
             abort(403, 'Unauthorized');
         }
         $designations = Designation::pluck('title', 'id');
+
         return view('employee.create', compact('designations'));
     }
 
@@ -90,7 +94,7 @@ class EmployeeController extends Controller
      */
     public function store(EmployeeRequest $request)
     {
-        if (!Auth::guard('admin')->check()) {
+        if (! Auth::guard('admin')->check()) {
             abort(403, 'Unauthorized');
         }
         $input = $request->validated();
@@ -106,7 +110,6 @@ class EmployeeController extends Controller
         return redirect()->route('admin.dashboard');
     }
 
-
     /**
      * Display the specified resource.
      */
@@ -120,7 +123,9 @@ class EmployeeController extends Controller
      */
     public function edit(Employee $employee)
     {
-        //
+        $designations = Designation::pluck('title', 'id');
+
+        return view('employee.edit', compact('employee', 'designations'));
     }
 
     /**
@@ -128,7 +133,36 @@ class EmployeeController extends Controller
      */
     public function update(Request $request, Employee $employee)
     {
-        //
+        // Validation
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'age' => 'required|integer|min:18',
+            'email' => 'required|email|unique:employees,email,'.$employee->id,
+            'designation_id' => 'required|exists:designations,id',
+            'salary' => 'required|numeric|min:0',
+            'password' => 'nullable|confirmed|min:6',
+        ]);
+
+        // Data collect karo
+        $data = $request->only([
+            'name',
+            'age',
+            'email',
+            'designation_id',
+            'salary',
+        ]);
+
+        // Agar password fill kiya hai to update karo
+        if ($request->filled('password')) {
+            $data['password'] = bcrypt($request->password);
+        }
+
+        // Update employee
+        $employee->update($data);
+
+        return redirect()
+            ->route('employee.index')
+            ->with('success', 'Employee updated successfully');
     }
 
     /**
@@ -148,6 +182,7 @@ class EmployeeController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         Session::flash('success', 'Logged out successfully.');
+
         return redirect()->route('employee.login');
     }
 }

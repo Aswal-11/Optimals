@@ -50,6 +50,8 @@ Route::middleware(\App\Http\Middleware\AdminMiddleware::class)->group(function (
     // Employee Management Routes (admin only)
     Route::get('/employee/index', [EmployeeController::class, 'index'])->name('employee.index');
     Route::get('/employees/{employee}', [EmployeeController::class, 'profile'])->name('employees.profile');
+    Route::get('/employee/{employee}/edit', [EmployeeController::class, 'edit'])->name('employee.edit');
+    Route::put('/employee/{employee}', [EmployeeController::class, 'update'])->name('employee.update');
 
     // Designation Routes
     Route::get('/designation/create', [DesignationController::class, 'create'])->name('designation.create');

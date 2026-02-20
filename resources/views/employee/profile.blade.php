@@ -72,7 +72,7 @@
                     <p class="text-gray-500 mb-2">Skills</p>
 
                     <div class="flex flex-wrap gap-2">
-                        @forelse ($employee->designation->skills ?? [] as $skill)
+                        @forelse ($employee->designation?->skills ?? [] as $skill)
                             <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm">
                                 {{ $skill->name }}
                             </span>

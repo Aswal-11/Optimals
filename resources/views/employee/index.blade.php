@@ -45,6 +45,12 @@
                                 View
                             </a>
                         </td>
+                        <td class="p-2 border">
+                            <a href="{{ route('employee.edit', $employee->id) }}"
+                                class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700 text-sm">
+                                Update
+                            </a>
+                        </td>
                     </tr>
 
                 @empty
