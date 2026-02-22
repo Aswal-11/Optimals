@@ -29,9 +29,9 @@
                 Create New Admin
             </a>
 
-            <a href="{{ route('designation.create') }}"
+            <a href="{{ route('designation.index') }}"
                 class="bg-purple-600 text-white px-6 py-4 rounded text-center font-semibold hover:bg-purple-700">
-                Create Designation
+                Designation List
             </a>
 
             <a href="{{ route('employee.index') }}"

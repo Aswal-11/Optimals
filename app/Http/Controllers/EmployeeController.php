@@ -3,19 +3,16 @@
 namespace App\Http\Controllers;
 
 // Models
-use App\Models\Employee;
-use App\Models\Designation;
-
-// Requests
-use Illuminate\Http\Request;
-use App\Http\Requests\EmployeeRequest;
-use App\Http\Requests\EmployeeUpdateRequest;
 use App\Http\Requests\EmployeeAuthenticateRequest;
-
+use App\Http\Requests\EmployeeRequest;
+// Requests
+use App\Http\Requests\EmployeeUpdateRequest;
+use App\Models\Designation;
+use App\Models\Employee;
+use Illuminate\Http\Request;
 // Authentication
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-
 // Session
 use Illuminate\Support\Facades\Session;
 
@@ -75,7 +72,7 @@ class EmployeeController extends Controller
         if (! Auth::guard('admin')->check()) {
             abort(403, 'Unauthorized');
         }
-        $employees = Employee::with('designation')->get();
+        $employees = Employee::with('designation')->paginate(2);
 
         return view('employee.index', compact('employees'));
     }
