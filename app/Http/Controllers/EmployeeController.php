@@ -3,16 +3,19 @@
 namespace App\Http\Controllers;
 
 // Models
-use App\Http\Requests\EmployeeAuthenticateRequest;
-use App\Http\Requests\EmployeeRequest;
-// Requests
-use App\Http\Requests\EmployeeUpdateRequest;
 use App\Models\Designation;
 use App\Models\Employee;
+
+// Requests
 use Illuminate\Http\Request;
+use App\Http\Requests\EmployeeRequest;
+use App\Http\Requests\EmployeeUpdateRequest;
+use App\Http\Requests\EmployeeAuthenticateRequest;
+
 // Authentication
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+
 // Session
 use Illuminate\Support\Facades\Session;
 
@@ -65,7 +68,7 @@ class EmployeeController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Show Employee
      */
     public function index()
     {
@@ -78,7 +81,7 @@ class EmployeeController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Create Employee
      */
     public function create()
     {
@@ -91,7 +94,7 @@ class EmployeeController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store Employee
      */
     public function store(EmployeeRequest $request)
     {
@@ -111,16 +114,9 @@ class EmployeeController extends Controller
         return redirect()->route('admin.dashboard');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Employee $employee)
-    {
-        //
-    }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show Edit Employee Form
      */
     public function edit(Employee $employee)
     {
@@ -130,7 +126,7 @@ class EmployeeController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update Employee
      */
     public function update(EmployeeUpdateRequest $request, Employee $employee)
     {
@@ -151,7 +147,7 @@ class EmployeeController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Delete Employee
      */
     public function delete(Employee $employee)
     {
