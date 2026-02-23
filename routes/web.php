@@ -53,12 +53,13 @@ Route::middleware(AdminMiddleware::class)->group(function () {
 
     // Employee Management Routes (admin only)
     Route::get('/employee/index', [EmployeeController::class, 'index'])->name('employee.index');
-    Route::get('/employees/{employee}', [EmployeeController::class, 'profile'])->name('employees.profile');
+    Route::get('/employees/{employee}/profile', [EmployeeController::class, 'profile'])->name('employees.profile');
     Route::get('/employee/{employee}/edit', [EmployeeController::class, 'edit'])->name('employee.edit');
     Route::patch('/employee/{employee}/update', [EmployeeController::class, 'update'])->name('employee.update');
     Route::delete('/employee/{employee}/delete', [EmployeeController::class, 'delete'])->name('employee.delete');
 
     // Designation Routes
+    Route::get('/designation/{designation}/show', [DesignationController::class, 'show'])->name('designation.show');
     Route::get('/designation/index', [DesignationController::class, 'index'])->name('designation.index');
     Route::get('/designation/create', [DesignationController::class, 'create'])->name('designation.create');
     Route::post('/designation/store', [DesignationController::class, 'store'])->name('designation.store');

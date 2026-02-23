@@ -37,6 +37,7 @@
                     <th class="border p-2 text-left">Title</th>
                     <th class="border p-2 text-left">Description</th>
                     <th class="border p-2 text-left">Skills</th>
+                    <th class="border p-2 text-left">View</th>
                     <th class="border p-2 text-center">Action</th>
                 </tr>
             </thead>
@@ -61,6 +62,13 @@
                                     {{ $skill->name }}
                                 </span>
                             @endforeach
+                        </td>
+
+                        <td class="p-2 border">
+                            <a href="{{ route('designation.show', $designation->id) }}"
+                                class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 text-sm">
+                                View
+                            </a>
                         </td>
 
                         <td class="border p-2 text-center space-x-2">

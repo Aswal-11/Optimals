@@ -16,7 +16,17 @@ use Illuminate\Support\Facades\Session;
 class DesignationController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Show Designation Detail
+     */
+    public function show(Designation $designation)
+    {
+        $designation->load('skills');
+
+        return view('designation.show', compact('designation'));
+    }
+
+    /**
+     * List Designations
      */
     public function index()
     {
