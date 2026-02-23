@@ -59,12 +59,13 @@ Route::middleware(AdminMiddleware::class)->group(function () {
     Route::delete('/employee/{employee}/delete', [EmployeeController::class, 'delete'])->name('employee.delete');
 
     // Designation Routes
-    Route::get('/designation/{designation}/show', [DesignationController::class, 'show'])->name('designation.show');
     Route::get('/designation/index', [DesignationController::class, 'index'])->name('designation.index');
     Route::get('/designation/create', [DesignationController::class, 'create'])->name('designation.create');
     Route::post('/designation/store', [DesignationController::class, 'store'])->name('designation.store');
     Route::get('/designation/{id}/edit', [DesignationController::class, 'edit'])->name('designation.edit');
+    Route::get('/designation/{designation}/show', [DesignationController::class, 'show'])->name('designation.show');
     Route::patch('/designation/{id}/update', [DesignationController::class, 'update'])->name('designation.update');
+    Route::delete('/designation/{designation}/delete', [DesignationController::class, 'delete'])->name('designation.delete');
 
     // Skill Routes
     Route::get('/skill/create', [SkillController::class, 'create'])->name('skill.create');

@@ -35,33 +35,20 @@
                 <tr class="bg-gray-900 text-white">
                     <th class="border p-2 text-left">#</th>
                     <th class="border p-2 text-left">Title</th>
-                    <th class="border p-2 text-left">Description</th>
-                    <th class="border p-2 text-left">Skills</th>
                     <th class="border p-2 text-left">View</th>
-                    <th class="border p-2 text-center">Action</th>
+                    <th class="border p-2 text-center">Edit</th>
+                    <th class="border p-2 text-center">Delete</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse ($designations as $designation)
                     <tr class="hover:bg-gray-50">
                         <td class="border p-2">
-                            {{ $loop->iteration }}
+                            {{ $designations->firstItem() + $loop->index }}
                         </td>
 
                         <td class="border p-2">
                             {{ $designation->title }}
-                        </td>
-
-                        <td class="border p-2">
-                            {{ $designation->description }}
-                        </td>
-
-                        <td class="border p-2">
-                            @foreach ($designation->skills as $skill)
-                                <span class="bg-green-100 text-green-700 px-2 py-1 rounded text-sm mr-1">
-                                    {{ $skill->name }}
-                                </span>
-                            @endforeach
                         </td>
 
                         <td class="p-2 border">
@@ -71,26 +58,26 @@
                             </a>
                         </td>
 
+                        {{-- Edit --}}
                         <td class="border p-2 text-center space-x-2">
-                            {{-- Edit --}}
                             <a href="{{ route('designation.edit', $designation->id) }}"
                                 class="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600 text-sm">
                                 Edit
                             </a>
+                        </td>
 
-                            {{-- Delete --}}
-                            {{-- <form action="{{ route('designation.destroy', $designation->id) }}"
-                              method="POST"
-                              class="inline-block"
-                              onsubmit="return confirm('Are you sure?')">
-                            @csrf
-                            @method('DELETE')
+                        {{-- Delete --}}
+                        <td class="border p-2 text-center space-x-2">
+                            <form action="{{ route('designation.delete', $designation->id) }}" method="POST"
+                                class="inline-block" onsubmit="return confirm('Are you sure?')">
+                                @csrf
+                                @method('DELETE')
 
-                            <button type="submit"
-                                class="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700 text-sm">
-                                Delete
-                            </button>
-                        </form> --}}
+                                <button type="submit"
+                                    class="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700 text-sm">
+                                    Delete
+                                </button>
+                            </form>
                         </td>
                     </tr>
                 @empty

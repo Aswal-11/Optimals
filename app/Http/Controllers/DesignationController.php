@@ -3,13 +3,11 @@
 namespace App\Http\Controllers;
 
 // Models
-use App\Models\Skill;
-use App\Models\Designation;
-
-// Requests
-use Illuminate\Http\Request;
 use App\Http\Requests\DesignationRequest;
-
+use App\Models\Designation;
+// Requests
+use App\Models\Skill;
+use Illuminate\Http\Request;
 // Session
 use Illuminate\Support\Facades\Session;
 
@@ -106,8 +104,12 @@ class DesignationController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Designation $designation)
+    public function delete(Designation $designation)
     {
-        //
+        $designation->delete();
+
+        Session::flash('success', 'Designation deleted successfully.');
+
+        return redirect()->route('designation.index');
     }
 }
