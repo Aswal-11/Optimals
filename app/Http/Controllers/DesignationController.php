@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 // Models
 use App\Http\Requests\DesignationRequest;
-use App\Models\Designation;
+use App\Http\Requests\DesignationUpdateRequest;
 // Requests
+use App\Models\Designation;
 use App\Models\Skill;
 use Illuminate\Http\Request;
 // Session
@@ -32,7 +33,7 @@ class DesignationController extends Controller
 
         $designations = Designation::with('skills')
             ->when($search, function ($query, $search) {
-                $query->where('title', 'like', "%{$search}%");  
+                $query->where('title', 'like', "%{$search}%");
             })
             ->paginate(2)
             ->withQueryString();
@@ -86,26 +87,22 @@ class DesignationController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(DesignationUpdateRequest $request, $id)
     {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'skill_id' => 'nullable|array',
-        ]);
+        $input = $request->validated();
+        $skill_ids = $input['skill_id'] ?? [];
+        unset($input['skill_id']);
 
-        $designation = Designation::findOrFail($id);
+        if ($input) {
+            $designation = Designation::findOrFail($id);
+            $designation->update($input);
+            $designation->skills()->sync($skill_ids);
+            Session::flash('sucess', 'Designation updated successfully ');
+        } else {
+            Session::flash('failed', 'Failed to update the designation');
+        }
 
-        $designation->update([
-            'title' => $request->title,
-            'description' => $request->description,
-        ]);
-
-        // Sync many-to-many skills
-        $designation->skills()->sync($request->skill_id);
-
-        return redirect()->route('designation.index')
-            ->with('success', 'Designation updated successfully');
+        return redirect()->route('designation.index');
     }
 
     /**
