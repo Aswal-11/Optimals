@@ -20,14 +20,35 @@
                     {{ session('error') }}
                 </div>
             @endif
+        </div>
+
+        <div class="flex justify-between items-center ">
+            <form method="GET" action="{{ route('designation.index') }}" class="mb-4">
+                <div class="flex gap-2">
+                    <input type="text" name="search" value="{{ request('search') }}"
+                        placeholder="Search by title"
+                        class="border px-4 py-2 rounded w-72 focus:outline-none focus:ring">
+
+                    <button type="submit" class="bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-700">
+                        Search
+                    </button>
+
+                    @if (request('search'))
+                        <a href="{{ route('designation.index') }}" class="bg-gray-500 text-white px-4 py-2 rounded">
+                            Clear
+                        </a>
+                    @endif
+                </div>
+            </form>
 
             <div class="flex gap-4">
-                <a href="/admin/dashboard" class="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700">
+                <a href="/admin/dashboard" class="bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-700">
                     Back
                 </a>
-                <a class="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700"
-                    href="{{ route('designation.create') }}"> Create Designation </a>
+                <a class="bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-700"
+                    href="{{ route('designation.create') }}">Create designation</a>
             </div>
+
         </div>
 
         <table class="w-full border-collapse border border-gray-200">

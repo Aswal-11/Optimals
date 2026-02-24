@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 // Models
-use App\Models\Designation;
 use App\Models\Employee;
+use App\Models\Designation;
 
 // Requests
 use Illuminate\Http\Request;
@@ -70,24 +70,30 @@ class EmployeeController extends Controller
     /**
      * Show Employee
      */
-    public function index()
+    public function index(Request $request)
     {
-        if (! Auth::guard('admin')->check()) {
-            abort(403, 'Unauthorized');
-        }
-        $employees = Employee::with('designation')->paginate(2);
+        $search = $request->query('search');
 
-        return view('employee.index', compact('employees'));
+        $employees = Employee::with('designation')
+            ->when($search, function ($query, $search) {
+                $query->where('name', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%")
+                    ->orWhereHas('designation', function ($q) use ($search) {
+                        $q->where('title', 'like', "%{$search}%");
+                    });
+            })
+            ->paginate(2)
+            ->withQueryString(); // keeps search during pagination
+
+        return view('employee.index', compact('employees', 'search'));
     }
+
 
     /**
      * Create Employee
      */
     public function create()
     {
-        if (! Auth::guard('admin')->check()) {
-            abort(403, 'Unauthorized');
-        }
         $designations = Designation::pluck('title', 'id');
 
         return view('employee.create', compact('designations'));
@@ -98,9 +104,6 @@ class EmployeeController extends Controller
      */
     public function store(EmployeeRequest $request)
     {
-        if (! Auth::guard('admin')->check()) {
-            abort(403, 'Unauthorized');
-        }
         $input = $request->validated();
         $input['password'] = Hash::make($input['password']);
 

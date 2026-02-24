@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Route;
 
 // Middleware
 use App\Http\Middleware\AdminMiddleware;
+use App\Http\Middleware\EmployeeAuthMiddleware;
 use App\Http\Middleware\BlockEmployeeFromCreateMiddleware;
 
 // Redirect root to login so login page appears first
@@ -32,13 +33,13 @@ Route::get('/employee/login', [EmployeeController::class, 'login'])->name('emplo
 Route::post('/employee/authenticate', [EmployeeController::class, 'authenticate'])->name('employee.authenticate');
 
 // Employee routes (require employee login)
-Route::middleware('auth:employee')->group(function () {
+Route::middleware(EmployeeAuthMiddleware::class)->group(function () {
     Route::get('/employee/profile', [EmployeeController::class, 'myProfile'])->name('employee.profile');
     Route::post('/employee/logout', [EmployeeController::class, 'logout'])->name('employee.logout');
 });
 
 // Block employee from create/store only (runs before admin check so redirect, not 403)
-Route::middleware(BlockEmployeeFromCreateMiddleware::class)->group(function () {
+Route::middleware( AdminMiddleware::class, BlockEmployeeFromCreateMiddleware::class)->group(function () {
     Route::get('/employee/create', [EmployeeController::class, 'create'])->name('employee.create');
     Route::post('/employee/store', [EmployeeController::class, 'store'])->name('employee.store');
 });

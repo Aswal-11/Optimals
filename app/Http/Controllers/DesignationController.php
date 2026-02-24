@@ -26,11 +26,18 @@ class DesignationController extends Controller
     /**
      * List Designations
      */
-    public function index()
+    public function index(Request $request)
     {
-        $designations = Designation::with('skills')->paginate(5);
+        $search = $request->query('search');
 
-        return view('designation.index', compact('designations'));
+        $designations = Designation::with('skills')
+            ->when($search, function ($query, $search) {
+                $query->where('title', 'like', "%{$search}%");  
+            })
+            ->paginate(2)
+            ->withQueryString();
+
+        return view('designation.index', compact('designations', 'search'));
     }
 
     /**

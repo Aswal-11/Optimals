@@ -7,6 +7,28 @@
                 Employee List
             </h2>
 
+
+        </div>
+
+        <div class="flex justify-between items-center ">
+            <form method="GET" action="{{ route('employee.index') }}" class="mb-4">
+                <div class="flex gap-2">
+                    <input type="text" name="search" value="{{ request('search') }}"
+                        placeholder="Search by name, email, or designation"
+                        class="border px-4 py-2 rounded w-72 focus:outline-none focus:ring">
+
+                    <button type="submit" class="bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-700">
+                        Search
+                    </button>
+
+                    @if (request('search'))
+                        <a href="{{ route('employee.index') }}" class="bg-gray-500 text-white px-4 py-2 rounded">
+                            Clear
+                        </a>
+                    @endif
+                </div>
+            </form>
+
             <div class="flex gap-4">
                 <a href="/admin/dashboard" class="bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-700">
                     Back
@@ -15,7 +37,7 @@
                     href="{{ route('employee.create') }}">Create employee</a>
             </div>
         </div>
-
+        
         <table class="w-full border border-gray-200">
             <thead class="bg-gray-800 text-white">
                 <tr>

@@ -60,9 +60,16 @@
                 @enderror
             </div>
 
-            <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-                Update
-            </button>
+            <div class="flex gap-4">
+                <button type="submit" class="flex-1 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+                    Update
+                </button>
+
+                <a href="{{ route('designation.index') }}"
+                    class="flex-1 bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700 text-center">
+                    Cancel
+                </a>
+            </div>
         </form>
     </div>
 
