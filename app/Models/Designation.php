@@ -8,7 +8,7 @@ class Designation extends Model
 {
     protected $fillable = [
         'title',
-        'description'
+        'description',
     ];
 
     public function employees()
@@ -18,6 +18,11 @@ class Designation extends Model
 
     public function skills()
     {
-      return $this->belongsToMany(Skill::class);
+        return $this->belongsToMany(Skill::class);
+    }
+
+    public function posts()
+    {
+        return $this->belongsToMany(JobPost::class);
     }
 }

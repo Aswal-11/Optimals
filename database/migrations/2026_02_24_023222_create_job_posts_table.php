@@ -13,7 +13,10 @@ return new class extends Migration
     {
         Schema::create('job_posts', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
+            $table->foreignId('designation_id')
+                  ->nullable()
+                  ->constrained()
+                  ->nullOnDelete();
             $table->text('description');
             $table->string('location');
             $table->decimal('salary', 10, 2)->nullable();

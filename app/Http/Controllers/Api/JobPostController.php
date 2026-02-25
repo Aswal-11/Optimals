@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Designation;
 use App\Models\JobPost;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -14,8 +15,19 @@ class JobPostController extends Controller
      */
     public function index(): JsonResponse
     {
+        $jobs = JobPost::with('designation')->get();
+
         return response()->json([
-            'data' => JobPost::all(),
+            'data' => $jobs,
+        ]);
+    }
+
+    public function create(): JsonResponse
+    {
+        $designations = Designation::pluck('title', 'id');
+
+        return response()->json([
+            'designations' => $designations,
         ]);
     }
 
@@ -25,7 +37,7 @@ class JobPostController extends Controller
     public function store(Request $request): JsonResponse
     {
         $validated = $request->validate([
-            'title' => 'required|string|max:255',
+            'designation_id' => 'required|exists:designations,id',
             'description' => 'required',
             'location' => 'required|string|max:255',
             'salary' => 'nullable|numeric',
