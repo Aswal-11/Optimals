@@ -2,11 +2,19 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
+// Models
 use App\Models\Designation;
 use App\Models\JobPost;
+
+// Requests
+use App\Http\Requests\Api\JobPostStoreRequest;
+use App\Http\Requests\Api\JobPostUpdateRequest;
+
+// Controller 
+use App\Http\Controllers\Controller;
+
+// Json
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class JobPostController extends Controller
 {
@@ -34,14 +42,9 @@ class JobPostController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): JsonResponse
+    public function store(JobPostStoreRequest $request): JsonResponse
     {
-        $validated = $request->validate([
-            'designation_id' => 'required|exists:designations,id',
-            'description' => 'required',
-            'location' => 'required|string|max:255',
-            'salary' => 'nullable|numeric',
-        ]);
+        $validated = $request->validated();
 
         $jobPost = JobPost::create($validated);
 
@@ -54,14 +57,9 @@ class JobPostController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, JobPost $jobPost)
+    public function update(JobPostUpdateRequest $request, JobPost $jobPost)
     {
-        $validated = $request->validate([
-            'title' => 'sometimes|string|max:255',
-            'description' => 'sometimes',
-            'location' => 'sometimes|string|max:255',
-            'salary' => 'nullable|numeric',
-        ]);
+        $validated = $request->validated();
 
         $jobPost->update($validated);
 

@@ -4,73 +4,110 @@
 
 @section('content')
 
-    <div class="max-w-md mx-auto bg-white p-6 rounded shadow">
-        <h2 class="text-xl font-semibold mb-4">Edit Designation</h2>
+    <div class="min-h-screen flex items-center justify-center bg-gray-100 px-4">
+        <div class="w-full max-w-lg bg-white p-8 rounded-2xl shadow-lg">
 
-        @if (session('success'))
-            <div id="flash-message" class="bg-green-500 text-white p-3 text-center transition-opacity duration-500">
-                {{ session('success') }}
-            </div>
-        @endif
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">
+                Edit Designation
+            </h2>
 
-        @if (session('error'))
-            <div id="flash-message" class="bg-red-500 text-white p-3 text-center transition-opacity duration-500">
-                {{ session('error') }}
-            </div>
-        @endif
+            {{-- Flash Messages --}}
+            @if (session('success'))
+                <div id="flash-message"
+                    class="mb-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative transition-opacity duration-500">
+                    {{ session('success') }}
+                </div>
+            @endif
 
-        <form action="{{ route('designation.update', $designation->id) }}" method="POST">
-            @csrf
-            @method('PATCH')
+            @if (session('error'))
+                <div id="flash-message"
+                    class="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative transition-opacity duration-500">
+                    {{ session('error') }}
+                </div>
+            @endif
 
-            {{-- Title --}}
-            <div class="mb-4">
-                <label class="block mb-1 font-medium">Title</label>
-                <input type="text" name="title" class="w-full border rounded px-3 py-2"
-                    value="{{ old('title', $designation->title) }}">
-                @error('title')
-                    <p class="text-red-500 text-sm">{{ $message }}</p>
-                @enderror
-            </div>
+            <form class="space-y-5">
+                @csrf
+                @method('PATCH')
 
-            {{-- Description --}}
-            <div class="mb-4">
-                <label class="block mb-1 font-medium">Description</label>
-                <textarea name="description" rows="4" class="w-full border rounded px-3 py-2">{{ old('description', $designation->description) }}</textarea>
-                @error('description')
-                    <p class="text-red-500 text-sm">{{ $message }}</p>
-                @enderror
-            </div>
+                {{-- Designation Dropdown --}}
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-1">
+                        Designation
+                    </label>
 
-            {{-- Skills --}}
-            <div class="mb-4">
-                <label class="block mb-1">Skills</label>
+                    <select name="designation_id"
+                        class="w-full border rounded-lg px-4 py-2 bg-white focus:ring-2 focus:ring-blue-400 focus:outline-none @error('designation_id') border-red-500 @enderror"
+                        required>
+                        <option value="">-- Select Designation --</option>
 
-                <select name="skill_id[]" multiple class="w-full border rounded px-3 py-2">
-                    @foreach ($skills as $id => $name)
-                        <option value="{{ $id }}"
-                            {{ in_array($id, old('skill_id', $designation->skills->pluck('id')->toArray())) ? 'selected' : '' }}>
-                            {{ $name }}
-                        </option>
-                    @endforeach
-                </select>
+                        @foreach ($designations as $id => $title)
+                            <option value="{{ $id }}"
+                                {{ old('designation_id', $jobPost->designation_id ?? '') == $id ? 'selected' : '' }}>
+                                {{ $title }}
+                            </option>
+                        @endforeach
+                    </select>
 
-                @error('skill_id')
-                    <p class="text-red-500 text-sm">{{ $message }}</p>
-                @enderror
-            </div>
+                    @error('designation_id')
+                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
 
-            <div class="flex gap-4">
-                <button type="submit" class="flex-1 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-                    Update
-                </button>
+                {{-- Description --}}
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-1">
+                        Description
+                    </label>
+                    <textarea name="description" rows="4"
+                        class="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none @error('description') border-red-500 @enderror"
+                        placeholder="Enter description" required>{{ old('description', $designation->description) }}</textarea>
 
-                <a href="{{ route('designation.index') }}"
-                    class="flex-1 bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700 text-center">
-                    Cancel
-                </a>
-            </div>
-        </form>
+                    @error('description')
+                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                {{-- Skills --}}
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-1">
+                        Skills
+                    </label>
+
+                    <select name="skill_id[]" multiple
+                        class="w-full border rounded-lg px-4 py-2 h-32 focus:ring-2 focus:ring-blue-400 focus:outline-none @error('skill_id') border-red-500 @enderror">
+                        @foreach ($skills as $id => $name)
+                            <option value="{{ $id }}"
+                                {{ in_array($id, old('skill_id', $designation->skills->pluck('id')->toArray())) ? 'selected' : '' }}>
+                                {{ $name }}
+                            </option>
+                        @endforeach
+                    </select>
+
+                    <p class="text-xs text-gray-500 mt-1">
+                        Hold Ctrl (Windows) / Command (Mac) to select multiple skills
+                    </p>
+
+                    @error('skill_id')
+                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                {{-- Buttons --}}
+                <div class="flex gap-4 pt-2">
+                    <button type="submit"
+                        class="flex-1 bg-blue-600 text-white py-2.5 rounded-lg font-semibold hover:bg-blue-700 transition duration-200">
+                        Update
+                    </button>
+
+                    <a href="{{ route('designation.index') }}"
+                        class="flex-1 bg-gray-500 text-white py-2.5 rounded-lg font-semibold hover:bg-gray-600 transition duration-200 text-center">
+                        Cancel
+                    </a>
+                </div>
+
+            </form>
+        </div>
     </div>
 
 @endsection

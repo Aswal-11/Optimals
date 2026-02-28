@@ -23,6 +23,6 @@ class Designation extends Model
 
     public function posts()
     {
-        return $this->belongsToMany(JobPost::class);
+        return $this->hasMany(JobPost::class);
     }
 }
