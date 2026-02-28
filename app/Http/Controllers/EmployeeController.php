@@ -136,7 +136,6 @@ class EmployeeController extends Controller
         // Validation
         $input = $request->validated();
 
-        // Agar password fill kiya hai to update karo
         if ($request->filled('password')) {
             $input['password'] = bcrypt($request->password);
         }

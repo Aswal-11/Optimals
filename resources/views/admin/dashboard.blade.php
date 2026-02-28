@@ -40,7 +40,7 @@
                 Employee List
             </a>
 
-             <a href="{{ route('job-post.index') }}"
+             <a href="{{ route('jobPost.index') }}"
                 class="bg-purple-600 text-white px-6 py-4 rounded text-center font-semibold hover:bg-purple-700">
                 Job List
             </a>

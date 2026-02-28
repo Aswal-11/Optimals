@@ -4,20 +4,46 @@
     <div class="min-h-screen bg-gray-100 py-8 px-4">
         <div class="max-w-6xl mx-auto">
 
-            {{-- Header --}}
-            <div class="flex justify-between items-center mb-6">
+            {{-- Header + Search --}}
+            <div class="flex flex-col md:flex-row md:justify-between md:items-center mb-6 gap-4">
+
                 <h2 class="text-2xl font-bold text-gray-800">
                     Job Posts List
                 </h2>
-
-                {{-- <a href="{{ route('job-posts.create') }}"
-               class="bg-blue-600 text-white px-5 py-2 rounded-lg shadow hover:bg-blue-700 transition duration-200">
-                + Create Job Post
-            </a> --}}
             </div>
 
+            <div class="flex justify-between items-center ">
+                {{-- Search Form --}}
+                <form method="GET" action="{{ route('jobPost.index') }}" class="flex gap-2">
+                    <input type="text" name="search" value="{{ request('search') }}"
+                        placeholder="Search by designation, location..."
+                        class="border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none">
+
+                    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+                        Search
+                    </button>
+
+                    @if (request('search'))
+                        <a href="{{ route('jobPost.index') }}"
+                            class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition">
+                            Reset
+                        </a>
+                    @endif
+                </form>
+
+                <div class="flex gap-4">
+                    <a href="{{ route('admin.dashboard') }}"
+                        class="bg-gray-800 text-white px-4 py-2 rounded-xl hover:bg-gray-700">
+                        Back
+                    </a>
+                    <a class="bg-gray-800 text-white px-4 py-2 rounded-xl hover:bg-gray-700"
+                        href="{{ route('jobPost.create') }}">Create Job Post</a>
+                </div>
+            </div>
+
+            {{-- Flash Messages --}}
             @if (session('success'))
-                <div id="flash-message" class="bg-green-500 border text-white p-3 text-center transition-opacity duration-500">
+                <div id="flash-message" class="bg-green-500 text-white p-3 text-center transition-opacity duration-500">
                     {{ session('success') }}
                 </div>
             @endif
@@ -29,7 +55,7 @@
             @endif
 
             {{-- Card --}}
-            <div class="bg-white shadow-lg rounded-2xl overflow-hidden">
+            <div class="bg-white shadow-lg rounded-2xl overflow-hidden mt-2">
 
                 <div class="overflow-x-auto">
                     <table class="min-w-full text-sm text-left text-gray-700">
@@ -52,11 +78,12 @@
                             @forelse($jobPosts as $job)
                                 <tr class="hover:bg-gray-50 transition duration-150">
 
+                                    {{-- Serial Number with Pagination --}}
                                     <td class="px-6 py-4 font-medium">
-                                        {{ $loop->iteration }}
+                                        {{ $jobPosts->firstItem() + $loop->index }}
                                     </td>
 
-                                    <td class="px-6 py-4">
+                                    <td class="px-6 py-4 font-semibold text-gray-800">
                                         {{ $job->designation->title ?? 'N/A' }}
                                     </td>
 
@@ -84,7 +111,6 @@
                                             {{-- Delete Button --}}
                                             <form action="{{ route('jobPost.delete', $job->id) }}" method="POST"
                                                 onsubmit="return confirm('Are you sure you want to delete this job post?')">
-
                                                 @csrf
                                                 @method('DELETE')
 
@@ -112,7 +138,11 @@
 
                     </table>
                 </div>
+            </div>
 
+            {{-- Pagination --}}
+            <div class="mt-6">
+                {{ $jobPosts->links() }}
             </div>
 
         </div>

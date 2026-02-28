@@ -75,8 +75,8 @@ Route::middleware(AdminMiddleware::class)->group(function () {
 
     // Post Routes
     Route::get('/jobPost/index', [JobPostController::class, 'index'])->name('jobPost.index');
-    // Route::get('/jobPost/create', [JobPostController::class, 'create'])->name('job-post.create');
-    // Route::get('/jobPost/store', [JobPostController::class, 'store'])->name('job-post.store');
+    Route::get('/jobPost/create', [JobPostController::class, 'create'])->name('jobPost.create');
+    Route::post('/jobPost/store', [JobPostController::class, 'store'])->name('jobPost.store');
     Route::get('/jobPost/{jobPost}/edit', [JobPostController::class, 'edit'])->name('jobPost.edit');
     Route::patch('/jobPost/{jobPost}/update', [JobPostController::class, 'update'])->name('jobPost.update');
     Route::delete('/jobPost/{jobPost}/delete', [JobPostController::class, 'delete'])->name('jobPost.delete');
