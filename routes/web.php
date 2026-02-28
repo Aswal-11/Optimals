@@ -4,6 +4,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\SkillController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\JobPostController;
 use App\Http\Controllers\DesignationController;
 
 // Routes & Auth
@@ -71,4 +72,12 @@ Route::middleware(AdminMiddleware::class)->group(function () {
     // Skill Routes
     Route::get('/skill/create', [SkillController::class, 'create'])->name('skill.create');
     Route::post('/skill/store', [SkillController::class, 'store'])->name('skill.store');
+
+    // Post Routes
+    Route::get('/jobPost/index', [JobPostController::class, 'index'])->name('jobPost.index');
+    // Route::get('/jobPost/create', [JobPostController::class, 'create'])->name('job-post.create');
+    // Route::get('/jobPost/store', [JobPostController::class, 'store'])->name('job-post.store');
+    Route::get('/jobPost/{jobPost}/edit', [JobPostController::class, 'edit'])->name('jobPost.edit');
+    Route::patch('/jobPost/{jobPost}/update', [JobPostController::class, 'update'])->name('jobPost.update');
+    Route::delete('/jobPost/{jobPost}/delete', [JobPostController::class, 'delete'])->name('jobPost.delete');
 });
