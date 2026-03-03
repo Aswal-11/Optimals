@@ -48,7 +48,10 @@ class AdminController extends Controller
 
     public function dashboard()
     {
+        $admin = Auth::guard('admin')->user();
+
         return view('admin.dashboard', [
+            'adminName' => $admin->name ?? 'Administrator',
             'totalEmployees' => Employee::count(),
             'totalJobs' => JobPost::count(),
             'activeJobs' => JobPost::where('is_active', true)->count(),

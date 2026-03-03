@@ -12,10 +12,10 @@
             </div>
         @endif
 
-        @if (session('failed'))
+        @if (session('error'))
             <div id="flash-message"
                  class="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative transition-opacity duration-500">
-                 {{ session('failed') }}
+                 {{ session('error') }}
             </div>
         @endif  
 
