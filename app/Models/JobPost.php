@@ -11,8 +11,17 @@ class JobPost extends Model
         'description',
         'location',
         'salary',
+        'is_active',
     ];
 
+    protected $casts = [
+        'salary' => 'decimal:2',
+        'is_active' => 'boolean',
+    ];
+
+    /**
+     * Relationship: JobPost belongs to Designation
+     */
     public function designation()
     {
         return $this->belongsTo(Designation::class);

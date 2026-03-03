@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Api;
+namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class JobPostUpdateRequest extends FormRequest
+class JobStoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,10 +22,10 @@ class JobPostUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'sometimes|string|max:255',
-            'description' => 'sometimes',
-            'location' => 'sometimes|string|max:255',
-            'salary' => 'nullable|numeric',
+            'designation_id' => 'required|exists:designations,id',
+            'description' => 'required|string|min:10|max:1000',
+            'location' => 'required|string|min:2|max:100',
+            'salary' => 'required|numeric|min:0',
             'is_active' => 'sometimes|boolean',
         ];
     }

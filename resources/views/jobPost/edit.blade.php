@@ -93,6 +93,21 @@
                 </div>
             </div>
 
+            {{-- Active / Inactive --}}
+            <div class="flex items-center">
+                <label class="mr-3 text-gray-700 font-semibold">Status</label>
+                <label class="inline-flex items-center cursor-pointer">
+                    <input type="checkbox"
+                           name="is_active"
+                           class="sr-only peer"
+                           {{ old('is_active', $jobPost->is_active) ? 'checked' : '' }}>
+                    <div class="relative w-11 h-6 bg-gray-300 rounded-full peer peer-checked:bg-green-500 transition duration-300">
+                        <div class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform duration-300 peer-checked:translate-x-5">
+                        </div>
+                    </div>
+                </label>
+            </div>
+
             {{-- Buttons --}}
             <div class="flex gap-4 pt-4">
                 <button 

@@ -9,7 +9,10 @@ use App\Models\Admin;
 use Illuminate\Http\Request;
 use App\Http\Requests\AdminRequest;
 use App\Http\Requests\LoginAuthenticateRequest;
-
+use App\Models\Designation;
+use App\Models\Employee;
+use App\Models\JobPost;
+use App\Models\Skill;
 // Authentication
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -45,7 +48,13 @@ class AdminController extends Controller
 
     public function dashboard()
     {
-        return view('admin.dashboard');
+        return view('admin.dashboard', [
+            'totalEmployees' => Employee::count(),
+            'totalJobs' => JobPost::count(),
+            'activeJobs' => JobPost::where('is_active', true)->count(),
+            'totalDesignations' => Designation::count(),
+            'totalSkills' => Skill::count(),
+        ]);
     }
 
     public function logout(Request $request)

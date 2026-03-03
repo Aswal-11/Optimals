@@ -2,18 +2,16 @@
 
 // Controllers
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\SkillController;
+use App\Http\Controllers\DesignationController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\JobPostController;
-use App\Http\Controllers\DesignationController;
-
+use App\Http\Controllers\SkillController;
 // Routes & Auth
-use Illuminate\Support\Facades\Route;
-
-// Middleware
 use App\Http\Middleware\AdminMiddleware;
-use App\Http\Middleware\EmployeeAuthMiddleware;
+// Middleware
 use App\Http\Middleware\BlockEmployeeFromCreateMiddleware;
+use App\Http\Middleware\EmployeeAuthMiddleware;
+use Illuminate\Support\Facades\Route;
 
 // Redirect root to login so login page appears first
 Route::get('/', function () {
@@ -40,13 +38,16 @@ Route::middleware(EmployeeAuthMiddleware::class)->group(function () {
 });
 
 // Block employee from create/store only (runs before admin check so redirect, not 403)
-Route::middleware( AdminMiddleware::class, BlockEmployeeFromCreateMiddleware::class)->group(function () {
+Route::middleware(AdminMiddleware::class, BlockEmployeeFromCreateMiddleware::class)->group(function () {
     Route::get('/employee/create', [EmployeeController::class, 'create'])->name('employee.create');
     Route::post('/employee/store', [EmployeeController::class, 'store'])->name('employee.store');
 });
 
 // All other routes require admin login
 Route::middleware(AdminMiddleware::class)->group(function () {
+    
+    Route::patch('/job-post/{job}/toggle-status',[JobPostController::class, 'toggleStatus'])->name('jobPost.toggleStatus');
+   
     // Admin Routes
     Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
     Route::post('/admin/logout', [AdminController::class, 'logout'])->name('admin.logout');

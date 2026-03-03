@@ -6,20 +6,21 @@
 
     <div class="max-w-6xl mx-auto bg-white p-6 rounded shadow">
 
+        {{-- Flash Messages --}}
+        @if (session('success'))
+            <div id="flash-message" class="mb-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative transition-opacity duration-500">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div id="flash-message" class="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative transition-opacity duration-500">
+                {{ session('error') }}
+            </div>
+        @endif
+
         <div class="flex justify-between items-center mb-6">
             <h2 class="text-2xl font-bold">Designation List</h2>
-
-            @if (session('success'))
-                <div id="flash-message" class="bg-green-500 text-white p-3 text-center transition-opacity duration-500">
-                    {{ session('success') }}
-                </div>
-            @endif
-
-            @if (session('error'))
-                <div id="flash-message" class="bg-red-500 text-white p-3 text-center transition-opacity duration-500">
-                    {{ session('error') }}
-                </div>
-            @endif
         </div>
 
         <div class="flex justify-between items-center ">
@@ -117,5 +118,17 @@
         </div>
 
     </div>
+
+    <script>
+        // Auto-fade flash messages after 5 seconds
+        const flashMessages = document.querySelectorAll('#flash-message');
+        if (flashMessages.length > 0) {
+            setTimeout(() => {
+                flashMessages.forEach(message => {
+                    message.style.opacity = '0';
+                });
+            }, 5000);
+        }
+    </script>
 
 @endsection

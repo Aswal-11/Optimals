@@ -22,6 +22,7 @@ class JobUpdateRequest extends FormRequest
             'description' => 'required',
             'location' => 'required|string|max:255',
             'salary' => 'nullable|numeric',
+            'is_active' => 'sometimes|boolean',
         ];
     }
 }

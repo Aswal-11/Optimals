@@ -54,9 +54,10 @@
                     </label>
 
                     <textarea name="description"
-                        rows="4"
-                        class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
-                        required>{{ old('description') }}</textarea>
+                              rows="4"
+                              class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                              required>{{ old('description') }}
+                    </textarea>
                 </div>
 
                 {{-- Location --}}
@@ -66,10 +67,10 @@
                     </label>
 
                     <input type="text"
-                        name="location"
-                        value="{{ old('location') }}"
-                        class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
-                        required>
+                           name="location"
+                           value="{{ old('location') }}"
+                           class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                           required>
                 </div>
 
                 {{-- Salary --}}
@@ -79,16 +80,35 @@
                     </label>
 
                     <input type="number"
-                        name="salary"
-                        value="{{ old('salary') }}"
-                        class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
-                        required>
+                           name="salary"
+                           value="{{ old('salary') }}"
+                           class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                           required>
+                </div>
+
+                {{-- Active / Inactive --}}
+                <div class="mb-6 flex items-center gap-4">
+
+                    <label class="text-gray-700 font-semibold">
+                        Status
+                    </label>
+
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox"
+                            name="is_active"
+                            value="1"
+                            class="sr-only peer"
+                            {{ old('is_active', true) ? 'checked' : '' }}>
+
+                        <div class="w-12 h-6 bg-gray-300 rounded-full peer-checked:bg-green-500 transition-all duration-300"></div>
+                        <div class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-all duration-300 peer-checked:translate-x-6"></div>
+                    </label>
                 </div>
 
                 {{-- Buttons --}}
                 <div class="flex justify-end gap-3">
 
-                    <a href="{{ route('job-posts.index') }}"
+                    <a href="{{ route('jobPost.index') }}"
                        class="bg-gray-500 text-white px-5 py-2 rounded-lg hover:bg-gray-600 transition">
                         Cancel
                     </a>

@@ -97,7 +97,7 @@ class DesignationController extends Controller
             $designation = Designation::findOrFail($id);
             $designation->update($input);
             $designation->skills()->sync($skill_ids);
-            Session::flash('sucess', 'Designation updated successfully ');
+            Session::flash('success', 'Designation updated successfully ');
         } else {
             Session::flash('failed', 'Failed to update the designation');
         }

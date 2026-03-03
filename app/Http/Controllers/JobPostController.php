@@ -3,16 +3,23 @@
 namespace App\Http\Controllers;
 
 // Models
-use App\Models\JobPost;
-use App\Models\Designation;
+use App\Http\Requests\JobStoreRequest;
 use App\Http\Requests\JobUpdateRequest;
-
 // Request
+use App\Models\Designation;
+use App\Models\JobPost;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
 class JobPostController extends Controller
 {
+    public function toggleStatus(JobPost $job)
+    {
+        $job->update(['is_active' => ! $job->is_active]);
+
+        return back();
+    }
+
     public function index(Request $request)
     {
         $query = JobPost::with('designation');
@@ -39,30 +46,23 @@ class JobPostController extends Controller
     {
         $designations = Designation::pluck('title', 'id');
 
+        if ($designations->isEmpty()) {
+
+            Session::flash('failed', 'Please create a designation first.');
+
+            return redirect()->route('jobPost.index');
+        }
+
         return view('jobPost.create', compact('designations'));
     }
 
-    public function store(Request $request)
+    public function store(JobStoreRequest $request)
     {
-        $validated = $request->validate([
-            'designation_id' => 'required|exists:designations,id',
-            'description' => 'required|string|min:10|max:1000',
-            'location' => 'required|string|min:2|max:100',
-            'salary' => 'required|numeric|min:0',
-        ], [
-            'designation_id.required' => 'Please select a designation.',
-            'designation_id.exists' => 'Selected designation is invalid.',
-            'description.required' => 'Description is required.',
-            'description.min' => 'Description must be at least 10 characters.',
-            'location.required' => 'Location is required.',
-            'salary.required' => 'Salary is required.',
-            'salary.numeric' => 'Salary must be a number.',
-        ]);
-
+        $validated = $request->validated();
+        $validated['is_active'] = $request->boolean('is_active');
         JobPost::create($validated);
 
-        return redirect()->route('jobPost.index')
-            ->with('success', 'Job Post created successfully!');
+        return redirect()->route('jobPost.index')->with('success', 'Job Post created successfully!');
     }
 
     /**
@@ -87,6 +87,8 @@ class JobPostController extends Controller
     public function update(JobUpdateRequest $request, JobPost $jobPost)
     {
         $input = $request->validated();
+        $input['is_active'] = $request->boolean('is_active');
+
         if ($input) {
             Session::flash('success', 'Job Post updated successfully.');
             $jobPost->update($input);
