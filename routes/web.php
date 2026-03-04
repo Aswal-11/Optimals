@@ -38,16 +38,16 @@ Route::middleware(EmployeeAuthMiddleware::class)->group(function () {
 });
 
 // Block employee from create/store only (runs before admin check so redirect, not 403)
-Route::middleware(AdminMiddleware::class, BlockEmployeeFromCreateMiddleware::class)->group(function () {
-    Route::get('/employee/create', [EmployeeController::class, 'create'])->name('employee.create');
-    Route::post('/employee/store', [EmployeeController::class, 'store'])->name('employee.store');
+Route::middleware( BlockEmployeeFromCreateMiddleware::class)->group(function () {
+    Route::get('/designation/create', [DesignationController::class, 'create'])->name('designation.create');
+    Route::post('/designation/store', [DesignationController::class, 'store'])->name('designation.store');
 });
 
 // All other routes require admin login
 Route::middleware(AdminMiddleware::class)->group(function () {
-    
-    Route::patch('/job-post/{job}/toggle-status',[JobPostController::class, 'toggleStatus'])->name('jobPost.toggleStatus');
-   
+
+    Route::patch('/job-post/{job}/toggle-status', [JobPostController::class, 'toggleStatus'])->name('jobPost.toggleStatus');
+
     // Admin Routes
     Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
     Route::post('/admin/logout', [AdminController::class, 'logout'])->name('admin.logout');
@@ -57,6 +57,8 @@ Route::middleware(AdminMiddleware::class)->group(function () {
     // Employee Management Routes (admin only)
     Route::get('/employee/index', [EmployeeController::class, 'index'])->name('employee.index');
     Route::get('/employees/{employee}/profile', [EmployeeController::class, 'profile'])->name('employees.profile');
+    Route::get('/employee/create', [EmployeeController::class, 'create'])->name('employee.create');
+    Route::post('/employee/store', [EmployeeController::class, 'store'])->name('employee.store');
     Route::get('/employee/{employee}/edit', [EmployeeController::class, 'edit'])->name('employee.edit');
     Route::patch('/employee/{employee}/update', [EmployeeController::class, 'update'])->name('employee.update');
     Route::delete('/employee/{employee}/delete', [EmployeeController::class, 'delete'])->name('employee.delete');
