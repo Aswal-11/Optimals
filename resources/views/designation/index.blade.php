@@ -4,131 +4,235 @@
 
 @section('content')
 
-    <div class="max-w-6xl mx-auto bg-white p-6 rounded shadow">
+    <div class="min-h-screen bg-gray-50">
 
-        {{-- Flash Messages --}}
-        @if (session('success'))
-            <div id="flash-message" class="mb-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative transition-opacity duration-500">
-                {{ session('success') }}
-            </div>
-        @endif
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
-        @if (session('error'))
-            <div id="flash-message" class="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative transition-opacity duration-500">
-                {{ session('error') }}
-            </div>
-        @endif
+            {{-- Header --}}
+            <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
 
-        <div class="flex justify-between items-center mb-6">
-            <h2 class="text-2xl font-bold">Designation List</h2>
-        </div>
+                <div>
+                    <p class="text-xs font-bold tracking-widest uppercase text-indigo-600 mb-1">
+                        HR Setup
+                    </p>
 
-        <div class="flex justify-between items-center ">
-            <form method="GET" action="{{ route('designation.index') }}" class="mb-4">
-                <div class="flex gap-2">
-                    <input type="text" name="search" value="{{ request('search') }}"
-                        placeholder="Search by title"
-                        class="border px-4 py-2 rounded w-72 focus:outline-none focus:ring">
+                    <h1 class="text-3xl sm:text-4xl font-extrabold text-gray-900 tracking-tight">
+                        Designation Directory
+                    </h1>
 
-                    <button type="submit" class="bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-700">
-                        Search
-                    </button>
-
-                    @if (request('search'))
-                        <a href="{{ route('designation.index') }}" class="bg-gray-500 text-white px-4 py-2 rounded">
-                            Clear
-                        </a>
-                    @endif
+                    <p class="mt-1.5 text-sm text-gray-500">
+                        Manage and organize job designations
+                    </p>
                 </div>
-            </form>
 
-            <div class="flex gap-4">
-                <a href="/admin/dashboard" class="bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-700">
-                    Back
-                </a>
-                <a class="bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-700"
-                    href="{{ route('designation.create') }}">Create designation</a>
+                <div class="flex items-center gap-3 flex-shrink-0">
+
+                    <a href="/admin/dashboard"
+                        class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-gray-200 bg-white text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-900 hover:text-white transition">
+
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                        </svg>
+
+                        Dashboard
+                    </a>
+
+                    <a href="{{ route('designation.create') }}"
+                        class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-indigo-600 text-white text-sm font-medium shadow-sm hover:bg-indigo-700 transition">
+
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                        </svg>
+
+                        Create Designation
+                    </a>
+
+                </div>
             </div>
 
+            {{-- Search Toolbar --}}
+            <div class="bg-white rounded-2xl border border-gray-200 shadow-sm px-5 py-4 mb-5">
+
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+
+                    <form method="GET" action="{{ route('designation.index') }}"
+                        class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 flex-1">
+
+                        <div class="relative flex-1 max-w-md">
+
+                            <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                            </svg>
+
+                            <input type="text" name="search" value="{{ request('search') }}"
+                                placeholder="Search designation title..."
+                                class="w-full pl-10 pr-4 py-2.5 text-sm bg-gray-50 border border-gray-200 rounded-xl
+focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent" />
+
+                        </div>
+
+                        <div class="flex gap-2">
+
+                            <button type="submit"
+                                class="px-5 py-2.5 bg-gray-900 text-white text-sm font-medium rounded-xl hover:bg-indigo-600 transition">
+                                Search
+                            </button>
+
+                            @if (request('search'))
+                                <a href="{{ route('designation.index') }}"
+                                    class="px-5 py-2.5 bg-white border border-gray-200 text-gray-600 text-sm font-medium rounded-xl hover:text-red-500">
+                                    Clear
+                                </a>
+                            @endif
+
+                        </div>
+
+                    </form>
+
+                    <div class="text-sm text-gray-500">
+                        Total:
+                        <span class="font-semibold text-gray-900">
+                            {{ $designations->total() }}
+                        </span>
+                        designations
+                    </div>
+
+                </div>
+            </div>
+
+            {{-- Table --}}
+            <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+
+                <div class="overflow-x-auto">
+
+                    <table class="w-full min-w-[600px]">
+
+                        <thead>
+
+                            <tr class="bg-gray-900">
+
+                                <th class="px-5 py-3 text-left text-xs font-bold text-gray-400 uppercase">#</th>
+
+                                <th class="px-4 py-3 text-left text-xs font-bold text-gray-400 uppercase">
+                                    Designation
+                                </th>
+
+                                <th class="px-5 py-3 text-right text-xs font-bold text-gray-400 uppercase">
+                                    Actions
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody class="divide-y divide-gray-100">
+
+                            @forelse($designations as $designation)
+                                <tr class="hover:bg-indigo-50/40 transition">
+
+                                    <td class="px-5 py-3 text-sm text-gray-400">
+                                        {{ $designations->firstItem() + $loop->index }}
+                                    </td>
+
+                                    <td class="px-4 py-3">
+
+                                        <div class="flex items-center gap-3">
+
+                                            <div
+                                                class="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-indigo-600 flex items-center justify-center shadow-sm">
+
+                                                <span class="text-xs font-bold text-white">
+                                                    {{ strtoupper(substr($designation->title, 0, 2)) }}
+                                                </span>
+
+                                            </div>
+
+                                            <span class="text-sm font-semibold text-gray-900">
+                                                {{ $designation->title }}
+                                            </span>
+
+                                        </div>
+
+                                    </td>
+
+                                    <td class="px-5 py-3">
+
+                                        <div class="flex justify-end gap-2">
+
+                                            <a href="{{ route('designation.show', $designation->id) }}"
+                                                class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-50 text-indigo-600 text-xs font-medium hover:bg-indigo-600 hover:text-white transition">
+
+                                                View
+                                            </a>
+
+                                            <a href="{{ route('designation.edit', $designation->id) }}"
+                                                class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-50 text-emerald-600 text-xs font-medium hover:bg-emerald-500 hover:text-white transition">
+
+                                                Edit
+                                            </a>
+
+                                            <form action="{{ route('designation.delete', $designation->id) }}"
+                                                method="POST">
+
+                                                @csrf
+                                                @method('DELETE')
+
+                                                <button type="submit" onclick="return confirm('Delete this designation?')"
+                                                    class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-red-50 text-red-500 text-xs font-medium hover:bg-red-500 hover:text-white transition">
+
+                                                    Delete
+
+                                                </button>
+
+                                            </form>
+
+                                        </div>
+
+                                    </td>
+
+                                </tr>
+
+                            @empty
+
+                                <tr>
+
+                                    <td colspan="3" class="px-4 py-20 text-center">
+
+                                        <p class="text-lg font-bold text-gray-700">
+                                            No designations found
+                                        </p>
+
+                                        <a href="{{ route('designation.create') }}"
+                                            class="mt-4 inline-flex items-center px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-xl hover:bg-indigo-700">
+
+                                            Create Designation
+
+                                        </a>
+
+                                    </td>
+
+                                </tr>
+                            @endforelse
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+            {{-- Pagination --}}
+            @if ($designations->hasPages())
+                <div class="mt-6 flex justify-end">
+                    {{ $designations->links() }}
+                </div>
+            @endif
+
         </div>
-
-        <table class="w-full border-collapse border border-gray-200">
-            <thead>
-                <tr class="bg-gray-900 text-white">
-                    <th class="border p-2 text-left">#</th>
-                    <th class="border p-2 text-left">Title</th>
-                    <th class="border p-2 text-left">View</th>
-                    <th class="border p-2 text-center">Edit</th>
-                    <th class="border p-2 text-center">Delete</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse ($designations as $designation)
-                    <tr class="hover:bg-gray-50">
-                        <td class="border p-2">
-                            {{ $designations->firstItem() + $loop->index }}
-                        </td>
-
-                        <td class="border p-2">
-                            {{ $designation->title }}
-                        </td>
-
-                        <td class="p-2 border">
-                            <a href="{{ route('designation.show', $designation->id) }}"
-                                class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 text-sm">
-                                View
-                            </a>
-                        </td>
-
-                        {{-- Edit --}}
-                        <td class="border p-2 text-center space-x-2">
-                            <a href="{{ route('designation.edit', $designation->id) }}"
-                                class="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600 text-sm">
-                                Edit
-                            </a>
-                        </td>
-
-                        {{-- Delete --}}
-                        <td class="border p-2 text-center space-x-2">
-                            <form action="{{ route('designation.delete', $designation->id) }}" method="POST"
-                                class="inline-block" onsubmit="return confirm('Are you sure?')">
-                                @csrf
-                                @method('DELETE')
-
-                                <button type="submit"
-                                    class="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700 text-sm">
-                                    Delete
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="5" class="border p-4 text-center text-gray-500">
-                            No designations found.
-                        </td>
-                    </tr>
-                @endforelse
-            </tbody>
-        </table>
-
-        {{-- Pagination --}}
-        <div class="mt-6">
-            {{ $designations->links() }}
-        </div>
-
     </div>
-
-    <script>
-        // Auto-fade flash messages after 5 seconds
-        const flashMessages = document.querySelectorAll('#flash-message');
-        if (flashMessages.length > 0) {
-            setTimeout(() => {
-                flashMessages.forEach(message => {
-                    message.style.opacity = '0';
-                });
-            }, 5000);
-        }
-    </script>
 
 @endsection

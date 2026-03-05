@@ -20,18 +20,17 @@
     @include('partials.footer')
 
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const flash = document.getElementById('flash-message');
-
-            if (flash) {
-                setTimeout(function() {
-                    flash.classList.add('opacity-0');
-                    setTimeout(() => flash.remove(), 500);
-                }, 3000);
-            }
-        });
+        function dismissFlash() {
+            const el = document.getElementById('flash-message');
+            el.style.opacity = '0';
+            el.style.transform = 'translateX(20px)';
+            el.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+            setTimeout(() => el.remove(), 300);
+        }
+        // Auto-dismiss after 4 seconds
+        setTimeout(dismissFlash, 4000);
     </script>
-    
+
 </body>
 
 </html>

@@ -6,22 +6,24 @@
 <div class="min-h-screen bg-gray-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
 
-        {{-- ── Flash Message ── --}}
+        {{-- ── Flash Message (fixed overlay, never shifts layout) ── --}}
         @if(session('success'))
-            <div id="flash-message" class="mb-8 flex items-center gap-3 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-2xl px-5 py-4 shadow-sm">
+            <div id="flash-message"
+                 class="fixed top-5 right-5 z-50 flex items-center gap-3 bg-white border border-emerald-200 text-emerald-800 rounded-2xl px-5 py-4 shadow-lg max-w-sm w-full sm:w-auto transition-all duration-500">
                 <div class="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center flex-shrink-0">
                     <svg class="w-4 h-4 text-emerald-600" fill="currentColor" viewBox="0 0 20 20">
                         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
                     </svg>
                 </div>
                 <p class="text-sm font-medium">{{ session('success') }}</p>
-                <button onclick="document.getElementById('flash-message').remove()" class="ml-auto text-emerald-400 hover:text-emerald-600 transition-colors">
+                <button onclick="dismissFlash()" class="ml-auto text-emerald-400 hover:text-emerald-600 transition-colors flex-shrink-0">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                     </svg>
                 </button>
             </div>
         @endif
+        
 
         {{-- ── Page Header ── --}}
         <div class="mb-10">
@@ -203,4 +205,4 @@
 
     </div>
 </div>
-@endsection 
+@endsection

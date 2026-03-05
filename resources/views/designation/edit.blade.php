@@ -26,30 +26,20 @@
                 </div>
             @endif
 
-            <form class="space-y-5">
+            <form class="space-y-5" action="{{ route('designation.update', $designation->id) }}" method="POST">
                 @csrf
                 @method('PATCH')
 
-                {{-- Designation Dropdown --}}
+                {{-- Designation Title --}}
                 <div>
                     <label class="block text-sm font-semibold text-gray-700 mb-1">
-                        Designation
+                        Title
                     </label>
+                    <input type="text" name="title" value="{{ old('title', $designation->title) }}"
+                        class="w-full border rounded-lg px-4 py-2 bg-white focus:ring-2 focus:ring-blue-400 focus:outline-none @error('title') border-red-500 @enderror"
+                        placeholder="Enter designation title" required>
 
-                    <select name="designation_id"
-                        class="w-full border rounded-lg px-4 py-2 bg-white focus:ring-2 focus:ring-blue-400 focus:outline-none @error('designation_id') border-red-500 @enderror"
-                        required>
-                        <option value="">-- Select Designation --</option>
-
-                        @foreach ($designations as $id => $title)
-                            <option value="{{ $id }}"
-                                {{ old('designation_id', $jobPost->designation_id ?? '') == $id ? 'selected' : '' }}>
-                                {{ $title }}
-                            </option>
-                        @endforeach
-                    </select>
-
-                    @error('designation_id')
+                    @error('title')
                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                     @enderror
                 </div>

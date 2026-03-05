@@ -31,12 +31,6 @@
                         </div>
                     </div>
 
-                    {{-- Theme toggle --}}
-                    <button id="theme-toggle"
-                        type="button"
-                        class="inline-flex items-center px-3 py-1.5 border border-gray-300 text-xs font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200">
-                    </button>
-
                     @if(!empty($logoutRoute))
                         <form action="{{ route($logoutRoute) }}" method="POST">
                             @csrf
