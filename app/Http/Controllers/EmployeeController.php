@@ -114,7 +114,7 @@ class EmployeeController extends Controller
             Session::flash('error', 'Failed to create Employee.');
         }
 
-        return redirect()->route('admin.dashboard');
+        return redirect()->route('employee.index');
     }
 
 

@@ -13,9 +13,9 @@
                             </svg>
                         </div>
                     </div>
-                    <h1 class="text-3xl font-bold bg-linear-to-r from-gray-800 to-gray-600 bg-clip-text">
+                    <a href="{{ route('admin.dashboard') }}" class="text-3xl font-bold bg-linear-to-r from-gray-800 to-gray-600 bg-clip-text">
                         OIU
-                    </h1>
+                    </a>
                 </div>
 
                 {{-- User Menu, Theme Switch and Logout --}}

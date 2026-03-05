@@ -55,11 +55,18 @@
             <div class="bg-white rounded-2xl border border-gray-200 shadow-sm px-5 py-4 mb-5">
 
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-
+                    <div class="text-sm text-gray-500">
+                        Total:
+                        <span class="font-semibold text-gray-900">
+                            {{ $designations->total() }}
+                        </span>
+                        designations
+                    </div>
+                    
                     <form method="GET" action="{{ route('designation.index') }}"
                         class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 flex-1">
 
-                        <div class="relative flex-1 max-w-md">
+                        <div class="relative flex-1">
 
                             <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none"
                                 stroke="currentColor" viewBox="0 0 24 24">
@@ -69,8 +76,7 @@
 
                             <input type="text" name="search" value="{{ request('search') }}"
                                 placeholder="Search designation title..."
-                                class="w-full pl-10 pr-4 py-2.5 text-sm bg-gray-50 border border-gray-200 rounded-xl
-focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent" />
+                                class="w-full pl-10 pr-4 py-2.5 text-sm bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent" />
 
                         </div>
 
@@ -91,15 +97,6 @@ focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent" 
                         </div>
 
                     </form>
-
-                    <div class="text-sm text-gray-500">
-                        Total:
-                        <span class="font-semibold text-gray-900">
-                            {{ $designations->total() }}
-                        </span>
-                        designations
-                    </div>
-
                 </div>
             </div>
 

@@ -12,36 +12,28 @@
                     <p class="text-xs font-bold tracking-widest uppercase text-indigo-600 mb-1">
                         Recruitment
                     </p>
-
                     <h1 class="text-3xl sm:text-4xl font-extrabold text-gray-900 tracking-tight">
                         Job Posts
                     </h1>
-
                     <p class="mt-1.5 text-sm text-gray-500">
                         Manage and publish job openings
                     </p>
                 </div>
-
                 <div class="flex items-center gap-3">
-
                     <a href="{{ route('admin.dashboard') }}"
                         class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-gray-200 bg-white text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-900 hover:text-white transition">
-
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                         </svg>
-
                         Dashboard
                     </a>
 
                     <a href="{{ route('jobPost.create') }}"
                         class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-indigo-600 text-white text-sm font-medium shadow-sm hover:bg-indigo-700 transition">
-
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                         </svg>
-
                         Create Job Post
                     </a>
 
@@ -117,9 +109,7 @@
                                 <th class="px-4 py-3 text-left text-xs font-bold text-gray-400 uppercase">Salary</th>
                                 <th class="px-4 py-3 text-center text-xs font-bold text-gray-400 uppercase">Status</th>
                                 <th class="px-5 py-3 text-right text-xs font-bold text-gray-400 uppercase">Actions</th>
-
                             </tr>
-
                         </thead>
 
                         <tbody class="divide-y divide-gray-100">
