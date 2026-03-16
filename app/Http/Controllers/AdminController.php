@@ -13,6 +13,7 @@ use App\Models\Designation;
 use App\Models\Employee;
 use App\Models\JobPost;
 use App\Models\Skill;
+
 // Authentication
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
