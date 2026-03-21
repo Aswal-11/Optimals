@@ -13,11 +13,25 @@
                             </svg>
                         </div>
                     </div>
-                    <a href="{{ route('admin.dashboard') }}" class="text-3xl font-bold bg-linear-to-r from-gray-800 to-gray-600 bg-clip-text">
+                    <a href="{{ route('admin.dashboard') }}"
+                        class="text-3xl font-bold bg-linear-to-r from-gray-800 to-gray-600 bg-clip-text">
                         OIU
                     </a>
                 </div>
+                <div>
+                    @if (Auth::guard('web')->check() || Auth::guard('subuser')->check())
+                        <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                            @csrf
+                            <button type="submit"
+                                class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                                Logout
+                            </button>
+                        </form>
+                    @endif
+                </div>
             </div>
         </div>
+
+
     </nav>
 </header>
