@@ -1,132 +1,114 @@
-@extends('layouts.app')
+@extends('layouts.admin')
+
+@section('title', 'Edit Job Post')
+
+@section('breadcrumb')
+    <div class="flex items-center gap-2 text-sm text-gray-500 font-medium">
+        <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+        </svg>
+        <svg class="w-3 h-3 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        <a href="{{ route('jobPost.index') }}" class="hover:text-gray-700 transition-colors">Job Posts</a>
+        <svg class="w-3 h-3 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        <span class="text-gray-900">Edit</span>
+    </div>
+@endsection
 
 @section('content')
+<div class="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-2xl mx-auto">
 
-<div class="min-h-screen bg-gray-100 py-10 px-4">
-    <div class="max-w-2xl mx-auto bg-white shadow-xl rounded-2xl p-8">
+        <div class="mb-6">
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">Edit Job Post</h1>
+            <p class="mt-1 text-sm text-gray-500">Update the details for this job listing.</p>
+        </div>
 
-        <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">
-            Edit Job Post
-        </h2>
-
-        {{-- Validation Errors --}}
         @if ($errors->any())
-            <div class="mb-5 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg">
-                <ul class="list-disc pl-5 text-sm space-y-1">
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
+            <div class="mb-5 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-sm">
+                <ul class="list-disc pl-5 space-y-1">
+                    @foreach ($errors->all() as $error)<li>{{ $error }}</li>@endforeach
                 </ul>
             </div>
         @endif
 
-        <form action="{{ route('jobPost.update', $jobPost->id) }}" method="POST" class="space-y-6">
-            @csrf
-            @method('PATCH')
+        <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 sm:p-8">
+            <form action="{{ route('jobPost.update', $jobPost->id) }}" method="POST" class="space-y-5">
+                @csrf
+                @method('PATCH')
 
-            {{-- Designation --}}
-            <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-2">
-                    Designation
-                </label>
-
-                <select 
-                    name="designation_id"
-                    class="w-full border rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-blue-400 focus:outline-none"
-                    required
-                >
-                    <option value="">Select Designation</option>
-
-                    @foreach ($designations as $id => $title)
-                        <option value="{{ $id }}"
-                            {{ old('designation_id', $jobPost->designation_id) == $id ? 'selected' : '' }}>
-                            {{ $title }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
-
-            {{-- Description --}}
-            <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-2">
-                    Description
-                </label>
-
-                <textarea 
-                    name="description"
-                    rows="4"
-                    class="w-full border rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-blue-400 focus:outline-none"
-                    required
-                >{{ old('description', $jobPost->description) }}</textarea>
-            </div>
-
-            {{-- Location --}}
-            <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-2">
-                    Location
-                </label>
-
-                <input 
-                    type="text"
-                    name="location"
-                    value="{{ old('location', $jobPost->location) }}"
-                    class="w-full border rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-blue-400 focus:outline-none"
-                    required
-                >
-            </div>
-
-            {{-- Salary --}}
-            <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-2">
-                    Salary
-                </label>
-
-                <div class="relative">
-                    <span class="absolute left-4 top-2.5 text-gray-500">₹</span>
-                    <input 
-                        type="number"
-                        name="salary"
-                        value="{{ old('salary', $jobPost->salary) }}"
-                        class="w-full border rounded-xl pl-8 pr-4 py-2.5 focus:ring-2 focus:ring-blue-400 focus:outline-none"
-                        required
-                    >
+                {{-- Designation --}}
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-1.5">Designation</label>
+                    <select name="designation_id"
+                        class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent focus:bg-white transition-all"
+                        required>
+                        <option value="">Select Designation</option>
+                        @foreach ($designations as $id => $title)
+                            <option value="{{ $id }}" {{ old('designation_id', $jobPost->designation_id) == $id ? 'selected' : '' }}>{{ $title }}</option>
+                        @endforeach
+                    </select>
+                    @error('designation_id')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@enderror
                 </div>
-            </div>
 
-            {{-- Active / Inactive --}}
-            <div class="flex items-center">
-                <label class="mr-3 text-gray-700 font-semibold">Status</label>
-                <label class="inline-flex items-center cursor-pointer">
-                    <input type="checkbox"
-                           name="is_active"
-                           class="sr-only peer"
-                           {{ old('is_active', $jobPost->is_active) ? 'checked' : '' }}>
-                    <div class="relative w-11 h-6 bg-gray-300 rounded-full peer peer-checked:bg-green-500 transition duration-300">
-                        <div class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform duration-300 peer-checked:translate-x-5">
-                        </div>
+                {{-- Description --}}
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-1.5">Description</label>
+                    <textarea name="description" rows="4"
+                        class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent focus:bg-white transition-all resize-none"
+                        required>{{ old('description', $jobPost->description) }}</textarea>
+                    @error('description')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@enderror
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                    {{-- Location --}}
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1.5">Location</label>
+                        <input type="text" name="location" value="{{ old('location', $jobPost->location) }}" placeholder="e.g. New Delhi"
+                            class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent focus:bg-white transition-all"
+                            required>
+                        @error('location')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@enderror
                     </div>
-                </label>
-            </div>
 
-            {{-- Buttons --}}
-            <div class="flex gap-4 pt-4">
-                <button 
-                    type="submit"
-                    class="flex-1 bg-blue-600 text-white py-3 rounded-xl font-semibold hover:bg-blue-700 transition shadow-md"
-                >
-                    Update Job Post
-                </button>
+                    {{-- Salary --}}
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1.5">Salary (₹)</label>
+                        <div class="relative">
+                            <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm font-medium">₹</span>
+                            <input type="number" name="salary" value="{{ old('salary', $jobPost->salary) }}"
+                                class="w-full border border-gray-200 rounded-xl pl-8 pr-4 py-2.5 text-sm bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent focus:bg-white transition-all"
+                                required>
+                        </div>
+                        @error('salary')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@enderror
+                    </div>
+                </div>
 
-                <a 
-                    href="{{ route('jobPost.index') }}"
-                    class="flex-1 bg-gray-500 text-white py-3 rounded-xl font-semibold hover:bg-gray-600 transition text-center shadow-md"
-                >
-                    Cancel
-                </a>
-            </div>
+                {{-- Status Toggle --}}
+                <div class="flex items-center justify-between bg-gray-50 rounded-xl px-4 py-3 border border-gray-200">
+                    <div>
+                        <p class="text-sm font-semibold text-gray-700">Status</p>
+                        <p class="text-xs text-gray-400">Toggle to activate or deactivate this listing</p>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer flex-shrink-0">
+                        <input type="checkbox" name="is_active" class="sr-only peer"
+                            {{ old('is_active', $jobPost->is_active) ? 'checked' : '' }}>
+                        <div class="w-11 h-6 bg-gray-300 rounded-full peer peer-checked:bg-indigo-500 transition duration-300"></div>
+                        <div class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full shadow transition-transform duration-300 peer-checked:translate-x-5"></div>
+                    </label>
+                </div>
 
-        </form>
+                {{-- Buttons --}}
+                <div class="flex flex-col sm:flex-row gap-3 pt-2">
+                    <button type="submit"
+                        class="flex-1 bg-indigo-600 text-white py-2.5 rounded-xl text-sm font-semibold hover:bg-indigo-700 transition-colors shadow-sm">
+                        Update Job Post
+                    </button>
+                    <a href="{{ route('jobPost.index') }}"
+                        class="flex-1 border border-gray-200 text-gray-600 py-2.5 rounded-xl text-sm font-semibold hover:bg-gray-50 transition-colors text-center">
+                        Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
-
 @endsection
