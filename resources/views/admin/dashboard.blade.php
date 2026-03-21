@@ -101,23 +101,6 @@
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
 
-                {{-- Create Admin --}}
-                <a href="{{ route('admin.create') }}"
-                   class="group flex items-center gap-4 bg-white rounded-2xl border border-gray-200 shadow-sm p-5 hover:border-indigo-300 hover:shadow-md transition-all duration-200">
-                    <div class="w-12 h-12 rounded-2xl bg-indigo-50 flex items-center justify-center flex-shrink-0 group-hover:bg-indigo-600 transition-colors duration-200">
-                        <svg class="w-6 h-6 text-indigo-600 group-hover:text-white transition-colors duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/>
-                        </svg>
-                    </div>
-                    <div class="min-w-0">
-                        <p class="text-sm font-bold text-gray-900 group-hover:text-indigo-600 transition-colors">Create Admin</p>
-                        <p class="text-xs text-gray-400 mt-0.5">Add new administrator</p>
-                    </div>
-                    <svg class="w-4 h-4 text-gray-300 group-hover:text-indigo-400 transition-colors ml-auto flex-shrink-0 -translate-x-1 group-hover:translate-x-0 duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                    </svg>
-                </a>
-
                 {{-- Designations --}}
                 <a href="{{ route('designation.index') }}"
                    class="group flex items-center gap-4 bg-white rounded-2xl border border-gray-200 shadow-sm p-5 hover:border-amber-300 hover:shadow-md transition-all duration-200">
@@ -185,20 +168,6 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                     </svg>
                 </a>
-
-                {{-- Placeholder / CTA card --}}
-                <div class="flex items-center gap-4 bg-gray-900 rounded-2xl border border-gray-800 shadow-sm p-5">
-                    <div class="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center flex-shrink-0">
-                        <svg class="w-6 h-6 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-                        </svg>
-                    </div>
-                    <div class="min-w-0">
-                        <p class="text-sm font-bold text-white">All Systems</p>
-                        <p class="text-xs text-gray-400 mt-0.5">Running smoothly</p>
-                    </div>
-                    <span class="ml-auto flex-shrink-0 w-2.5 h-2.5 rounded-full bg-emerald-400 ring-4 ring-emerald-400/20"></span>
-                </div>
 
             </div>
         </div>

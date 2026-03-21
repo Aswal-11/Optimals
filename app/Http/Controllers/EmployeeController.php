@@ -8,12 +8,10 @@ use App\Models\Designation;
 
 // Requests
 use Illuminate\Http\Request;
-use App\Http\Requests\EmployeeRequest;
+use App\Http\Requests\EmployeeStoreRequest;
 use App\Http\Requests\EmployeeUpdateRequest;
-use App\Http\Requests\EmployeeAuthenticateRequest;
 
 // Authentication
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 // Session
@@ -21,42 +19,6 @@ use Illuminate\Support\Facades\Session;
 
 class EmployeeController extends Controller
 {
-    /**
-     * Show the employee login form
-     */
-    public function login()
-    {
-        return view('employee.authenticate.employee_login');
-    }
-
-    /**
-     * Emoloyee authentication
-     */
-    public function authenticate(EmployeeAuthenticateRequest $request)
-    {
-        $credentials = $request->validated();
-
-        if (Auth::guard('employee')->attempt($credentials)) {
-            $request->session()->regenerate();
-            Session::flash('success', 'Employee logged in successfully.');
-
-            return redirect()->intended(route('employee.profile'));
-        }
-
-        return back()->withErrors(['email' => 'Invalid credentials'])->onlyInput('email');
-    }
-
-    /**
-     * Show the logged-in employee's own profile (no ID in URL).
-     */
-    public function myProfile()
-    {
-        $employee = Auth::guard('employee')->user();
-        $employee->load('designation.skills');
-
-        return view('employee.profile', compact('employee'));
-    }
-
     /**
      * Show employee profile by ID (admin viewing any employee).
      */
@@ -102,7 +64,7 @@ class EmployeeController extends Controller
     /**
      * Store Employee
      */
-    public function store(EmployeeRequest $request)
+    public function store(EmployeeStoreRequest $request)
     {
         $input = $request->validated();
         $input['password'] = Hash::make($input['password']);
@@ -157,18 +119,5 @@ class EmployeeController extends Controller
 
         return redirect()->route('employee.index')
             ->with('success', 'Employee deleted successfully.');
-    }
-
-    /**
-     * Logout employee
-     */
-    public function logout(Request $request)
-    {
-        Auth::guard('employee')->logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-        Session::flash('success', 'Logged out successfully.');
-
-        return redirect()->route('employee.login');
     }
 }

@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 // Models
-use App\Http\Requests\DesignationRequest;
-use App\Http\Requests\DesignationUpdateRequest;
-// Requests
 use App\Models\Designation;
 use App\Models\Skill;
 use Illuminate\Http\Request;
+
+// Requests
+use App\Http\Requests\DesignationStoreRequest;
+use App\Http\Requests\DesignationUpdateRequest;
+
 // Session
 use Illuminate\Support\Facades\Session;
 
@@ -54,7 +56,7 @@ class DesignationController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(DesignationRequest $request)
+    public function store(DesignationStoreRequest $request)
     {
         $input = $request->validated();
         $skill_ids = $input['skill_id'] ?? [];

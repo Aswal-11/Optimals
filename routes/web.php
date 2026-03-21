@@ -6,81 +6,44 @@ use App\Http\Controllers\DesignationController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\JobPostController;
 use App\Http\Controllers\SkillController;
-// Routes & Auth
-use App\Http\Middleware\AdminMiddleware;
+
 // Middleware
-use App\Http\Middleware\BlockEmployeeFromCreateMiddleware;
-use App\Http\Middleware\EmployeeAuthMiddleware;
 use Illuminate\Support\Facades\Route;
 
-// Redirect root to login so login page appears first
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::patch('/job-post/{job}/toggle-status', [JobPostController::class, 'toggleStatus'])->name('jobPost.toggleStatus');
 
-// Named route for auth middleware redirect (unauthenticated users go here)
-Route::get('/login', function () {
-    return redirect()->route('admin.login');
-})->name('login');
+// Admin Routes
+Route::get('/', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+Route::post('/admin/logout', [AdminController::class, 'logout'])->name('admin.logout');
+Route::get('/admin/create', [AdminController::class, 'create'])->name('admin.create');
+Route::post('/admin/store', [AdminController::class, 'store'])->name('admin.store');
 
-// Login and registration routes (no auth required so login page and "Register here" work)
-Route::get('/admin/login', [AdminController::class, 'login'])->name('admin.login');
-Route::post('/admin/authenticate', [AdminController::class, 'authenticate'])->name('admin.authenticate');
+// Employee Management Routes (admin only)
+Route::get('/employee/index', [EmployeeController::class, 'index'])->name('employee.index');
+Route::get('/employees/{employee}/profile', [EmployeeController::class, 'profile'])->name('employees.profile');
+Route::get('/employee/create', [EmployeeController::class, 'create'])->name('employee.create');
+Route::post('/employee/store', [EmployeeController::class, 'store'])->name('employee.store');
+Route::get('/employee/{employee}/edit', [EmployeeController::class, 'edit'])->name('employee.edit');
+Route::patch('/employee/{employee}/update', [EmployeeController::class, 'update'])->name('employee.update');
+Route::delete('/employee/{employee}/delete', [EmployeeController::class, 'delete'])->name('employee.delete');
 
-// Employee Login route
-Route::get('/employee/login', [EmployeeController::class, 'login'])->name('employee.login');
-Route::post('/employee/authenticate', [EmployeeController::class, 'authenticate'])->name('employee.authenticate');
+// Designation Routes
+Route::get('/designation/index', [DesignationController::class, 'index'])->name('designation.index');
+Route::get('/designation/create', [DesignationController::class, 'create'])->name('designation.create');
+Route::post('/designation/store', [DesignationController::class, 'store'])->name('designation.store');
+Route::get('/designation/{id}/edit', [DesignationController::class, 'edit'])->name('designation.edit');
+Route::get('/designation/{designation}/show', [DesignationController::class, 'show'])->name('designation.show');
+Route::patch('/designation/{id}/update', [DesignationController::class, 'update'])->name('designation.update');
+Route::delete('/designation/{designation}/delete', [DesignationController::class, 'delete'])->name('designation.delete');
 
-// Employee routes (require employee login)
-Route::middleware(EmployeeAuthMiddleware::class)->group(function () {
-    Route::get('/employee/profile', [EmployeeController::class, 'myProfile'])->name('employee.profile');
-    Route::post('/employee/logout', [EmployeeController::class, 'logout'])->name('employee.logout');
-});
+// Skill Routes
+Route::get('/skill/create', [SkillController::class, 'create'])->name('skill.create');
+Route::post('/skill/store', [SkillController::class, 'store'])->name('skill.store');
 
-// Block employee from create/store only (runs before admin check so redirect, not 403)
-Route::middleware( BlockEmployeeFromCreateMiddleware::class)->group(function () {
-    Route::get('/designation/create', [DesignationController::class, 'create'])->name('designation.create');
-    Route::post('/designation/store', [DesignationController::class, 'store'])->name('designation.store');
-});
-
-// All other routes require admin login
-Route::middleware(AdminMiddleware::class)->group(function () {
-
-    Route::patch('/job-post/{job}/toggle-status', [JobPostController::class, 'toggleStatus'])->name('jobPost.toggleStatus');
-
-    // Admin Routes
-    Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
-    Route::post('/admin/logout', [AdminController::class, 'logout'])->name('admin.logout');
-    Route::get('/admin/create', [AdminController::class, 'create'])->name('admin.create');
-    Route::post('/admin/store', [AdminController::class, 'store'])->name('admin.store');
-
-    // Employee Management Routes (admin only)
-    Route::get('/employee/index', [EmployeeController::class, 'index'])->name('employee.index');
-    Route::get('/employees/{employee}/profile', [EmployeeController::class, 'profile'])->name('employees.profile');
-    Route::get('/employee/create', [EmployeeController::class, 'create'])->name('employee.create');
-    Route::post('/employee/store', [EmployeeController::class, 'store'])->name('employee.store');
-    Route::get('/employee/{employee}/edit', [EmployeeController::class, 'edit'])->name('employee.edit');
-    Route::patch('/employee/{employee}/update', [EmployeeController::class, 'update'])->name('employee.update');
-    Route::delete('/employee/{employee}/delete', [EmployeeController::class, 'delete'])->name('employee.delete');
-
-    // Designation Routes
-    Route::get('/designation/index', [DesignationController::class, 'index'])->name('designation.index');
-    Route::get('/designation/create', [DesignationController::class, 'create'])->name('designation.create');
-    Route::post('/designation/store', [DesignationController::class, 'store'])->name('designation.store');
-    Route::get('/designation/{id}/edit', [DesignationController::class, 'edit'])->name('designation.edit');
-    Route::get('/designation/{designation}/show', [DesignationController::class, 'show'])->name('designation.show');
-    Route::patch('/designation/{id}/update', [DesignationController::class, 'update'])->name('designation.update');
-    Route::delete('/designation/{designation}/delete', [DesignationController::class, 'delete'])->name('designation.delete');
-
-    // Skill Routes
-    Route::get('/skill/create', [SkillController::class, 'create'])->name('skill.create');
-    Route::post('/skill/store', [SkillController::class, 'store'])->name('skill.store');
-
-    // Post Routes
-    Route::get('/jobPost/index', [JobPostController::class, 'index'])->name('jobPost.index');
-    Route::get('/jobPost/create', [JobPostController::class, 'create'])->name('jobPost.create');
-    Route::post('/jobPost/store', [JobPostController::class, 'store'])->name('jobPost.store');
-    Route::get('/jobPost/{jobPost}/edit', [JobPostController::class, 'edit'])->name('jobPost.edit');
-    Route::patch('/jobPost/{jobPost}/update', [JobPostController::class, 'update'])->name('jobPost.update');
-    Route::delete('/jobPost/{jobPost}/delete', [JobPostController::class, 'delete'])->name('jobPost.delete');
-});
+// Post Routes
+Route::get('/jobPost/index', [JobPostController::class, 'index'])->name('jobPost.index');
+Route::get('/jobPost/create', [JobPostController::class, 'create'])->name('jobPost.create');
+Route::post('/jobPost/store', [JobPostController::class, 'store'])->name('jobPost.store');
+Route::get('/jobPost/{jobPost}/edit', [JobPostController::class, 'edit'])->name('jobPost.edit');
+Route::patch('/jobPost/{jobPost}/update', [JobPostController::class, 'update'])->name('jobPost.update');
+Route::delete('/jobPost/{jobPost}/delete', [JobPostController::class, 'delete'])->name('jobPost.delete');

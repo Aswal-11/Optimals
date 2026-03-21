@@ -14,7 +14,7 @@
                 <p class="mt-1.5 text-sm text-gray-500">Manage and view all employee records</p>
             </div>
             <div class="flex items-center gap-3 flex-shrink-0">
-                <a href="/admin/dashboard"
+               <a href="{{ route('admin.dashboard') }}"
                    class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-gray-200 bg-white text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-900 hover:text-white hover:border-gray-900 transition-all duration-150">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
