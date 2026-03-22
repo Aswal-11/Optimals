@@ -171,28 +171,28 @@
                     </div>
                     
                     <div class="p-5 space-y-4">
-                        <div class="flex items-center justify-between items-center">
+                        <div class="flex items-center justify-between">
                             <div class="flex items-center gap-3">
                                 <div class="w-2 h-2 rounded-full bg-indigo-500"></div>
                                 <span class="text-sm font-medium text-gray-600">Total Employees</span>
                             </div>
                             <span class="text-sm font-bold text-gray-900 tabular-nums">{{ $totalEmployees }}</span>
                         </div>
-                        <div class="flex items-center justify-between items-center">
+                        <div class="flex items-center justify-between">
                             <div class="flex items-center gap-3">
                                 <div class="w-2 h-2 rounded-full bg-blue-500"></div>
                                 <span class="text-sm font-medium text-gray-600">All Jobs</span>
                             </div>
                             <span class="text-sm font-bold text-gray-900 tabular-nums">{{ $totalJobs }}</span>
                         </div>
-                        <div class="flex items-center justify-between items-center">
+                        <div class="flex items-center justify-between">
                             <div class="flex items-center gap-3">
                                 <div class="w-2 h-2 rounded-full bg-emerald-500"></div>
                                 <span class="text-sm font-medium text-gray-600">Active Jobs</span>
                             </div>
                             <span class="text-sm font-bold text-gray-900 tabular-nums">{{ $activeJobs }}</span>
                         </div>
-                        <div class="flex items-center justify-between items-center">
+                        <div class="flex items-center justify-between">
                             <div class="flex items-center gap-3">
                                 <div class="w-2 h-2 rounded-full bg-amber-500"></div>
                                 <span class="text-sm font-medium text-gray-600">Designations</span>
