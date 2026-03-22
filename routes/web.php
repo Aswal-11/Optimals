@@ -12,7 +12,7 @@ use App\Http\Controllers\SkillController;
 use Illuminate\Support\Facades\Route;
 
 // Auth Routes
-Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+Route::get('/', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
 
 Route::middleware('checkauth')->group(function () {
