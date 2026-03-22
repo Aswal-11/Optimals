@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
-// Models
-use App\Http\Requests\SkillRequest;
 // Request
+use App\Http\Requests\SkillRequest;
+
+// Models
 use App\Models\Skill;
 use Illuminate\Http\Request;
+
 // Session
 use Illuminate\Support\Facades\Session;
 
