@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-class AdminMiddleware
+class CheckAuth
 {
     /**
      * Handle an incoming request.
@@ -16,10 +16,16 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $isAdmin = Auth::guard('admin')->check();
-        if (!$isAdmin) {
-            abort(403, 'You can\'t access this page.');
+         if (Auth::guard('web')->check()) {
+            Auth::shouldUse('web');
+            return $next($request);
         }
-        return $next($request);
+
+        if (Auth::guard('subuser')->check()) {
+            Auth::shouldUse('subuser');
+            return $next($request);
+        }
+
+        return redirect()->route('login');
     }
 }

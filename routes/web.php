@@ -2,54 +2,22 @@
 
 // Controllers
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\DesignationController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\JobPostController;
 use App\Http\Controllers\SkillController;
-// Routes & Auth
-use App\Http\Middleware\AdminMiddleware;
+
 // Middleware
-use App\Http\Middleware\BlockEmployeeFromCreateMiddleware;
-use App\Http\Middleware\EmployeeAuthMiddleware;
 use Illuminate\Support\Facades\Route;
 
-// Redirect root to login so login page appears first
-Route::get('/', function () {
-    return view('welcome');
-});
+// Auth Routes
+Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
 
-// Named route for auth middleware redirect (unauthenticated users go here)
-Route::get('/login', function () {
-    return redirect()->route('admin.login');
-})->name('login');
-
-// Login and registration routes (no auth required so login page and "Register here" work)
-Route::get('/admin/login', [AdminController::class, 'login'])->name('admin.login');
-Route::post('/admin/authenticate', [AdminController::class, 'authenticate'])->name('admin.authenticate');
-
-// Employee Login route
-Route::get('/employee/login', [EmployeeController::class, 'login'])->name('employee.login');
-Route::post('/employee/authenticate', [EmployeeController::class, 'authenticate'])->name('employee.authenticate');
-
-// Employee routes (require employee login)
-Route::middleware(EmployeeAuthMiddleware::class)->group(function () {
-    Route::get('/employee/profile', [EmployeeController::class, 'myProfile'])->name('employee.profile');
-    Route::post('/employee/logout', [EmployeeController::class, 'logout'])->name('employee.logout');
-});
-
-// Block employee from create/store only (runs before admin check so redirect, not 403)
-Route::middleware( BlockEmployeeFromCreateMiddleware::class)->group(function () {
-    Route::get('/designation/create', [DesignationController::class, 'create'])->name('designation.create');
-    Route::post('/designation/store', [DesignationController::class, 'store'])->name('designation.store');
-});
-
-// All other routes require admin login
-Route::middleware(AdminMiddleware::class)->group(function () {
-
-    Route::patch('/job-post/{job}/toggle-status', [JobPostController::class, 'toggleStatus'])->name('jobPost.toggleStatus');
-
+Route::middleware('checkauth')->group(function () {
     // Admin Routes
-    Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+    Route::get('/admindashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
     Route::post('/admin/logout', [AdminController::class, 'logout'])->name('admin.logout');
     Route::get('/admin/create', [AdminController::class, 'create'])->name('admin.create');
     Route::post('/admin/store', [AdminController::class, 'store'])->name('admin.store');
@@ -76,11 +44,14 @@ Route::middleware(AdminMiddleware::class)->group(function () {
     Route::get('/skill/create', [SkillController::class, 'create'])->name('skill.create');
     Route::post('/skill/store', [SkillController::class, 'store'])->name('skill.store');
 
-    // Post Routes
+    // Job-Post Routes
     Route::get('/jobPost/index', [JobPostController::class, 'index'])->name('jobPost.index');
     Route::get('/jobPost/create', [JobPostController::class, 'create'])->name('jobPost.create');
     Route::post('/jobPost/store', [JobPostController::class, 'store'])->name('jobPost.store');
     Route::get('/jobPost/{jobPost}/edit', [JobPostController::class, 'edit'])->name('jobPost.edit');
     Route::patch('/jobPost/{jobPost}/update', [JobPostController::class, 'update'])->name('jobPost.update');
     Route::delete('/jobPost/{jobPost}/delete', [JobPostController::class, 'delete'])->name('jobPost.delete');
+    Route::patch('/job-post/{job}/toggle-status', [JobPostController::class, 'toggleStatus'])->name('jobPost.toggleStatus');
+
+    Route::post('/logout',[AuthController::class, 'logout'])->name('logout');
 });
