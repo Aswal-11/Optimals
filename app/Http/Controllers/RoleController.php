@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Permission;
 use App\Models\Role;
 use Illuminate\Http\Request;
 
@@ -20,7 +21,12 @@ class RoleController extends Controller
      */
     public function create()
     {
-        //
+       $permissions = Permission::select('id', 'name', 'slug')
+                                ->orderBy('name')
+                                ->get();
+        $tableNames = config('table_access.tables');
+
+        return view('role.create', compact('permissions', 'tableNames'));
     }
 
     /**
@@ -28,7 +34,7 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        dd($request);
     }
 
     /**

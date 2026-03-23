@@ -13,10 +13,10 @@ class PermissionSeeder extends Seeder
     public function run(): void
     {
         Permission::insert([
-            ['name' => 'create'],
-            ['name' => 'read'],
-            ['name' => 'update'],
-            ['name' => 'delete'],
+            ['name' => 'create', 'slug'=>'create'],
+            ['name' => 'read', 'slug'=>'read'],
+            ['name' => 'update', 'slug'=>'update'],
+            ['name' => 'delete', 'slug'=>'delete'],
         ]);
     }
 }

@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\DesignationController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\JobPostController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SkillController;
 
 // Middleware
@@ -54,4 +55,9 @@ Route::middleware('checkauth')->group(function () {
     Route::patch('/job-post/{job}/toggle-status', [JobPostController::class, 'toggleStatus'])->name('jobPost.toggleStatus');
 
     Route::post('/logout',[AuthController::class, 'logout'])->name('logout');
+
+    //Role Routes
+    Route::get('/role/create', [RoleController::class, 'create'])->name('role.create');
+    Route::post('/role/store', [RoleController::class, 'store'])->name('role.store');
+
 });
