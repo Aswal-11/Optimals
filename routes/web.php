@@ -10,6 +10,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SkillController;
 
 // Middleware
+use App\Http\Controllers\SubuserController;
 use Illuminate\Support\Facades\Route;
 
 // Auth Routes
@@ -59,5 +60,8 @@ Route::middleware('checkauth')->group(function () {
     //Role Routes
     Route::get('/role/create', [RoleController::class, 'create'])->name('role.create');
     Route::post('/role/store', [RoleController::class, 'store'])->name('role.store');
+    Route::get('/role/index', [RoleController::class, 'index'])->name('roles.index');
+
+    Route::resource('subusers', SubUserController::class);
 
 });

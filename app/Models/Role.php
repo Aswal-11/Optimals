@@ -6,16 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Role extends Model
 {
-    protected $fillable = ['name', 'table_name', 'permission_id'];
+    protected $fillable = ['name',  'description'];
 
     public function permissions()
     {
-        return $this->belongsToMany(Permission::class)
+        return $this->belongsToMany(Permission::class, 'role_permission')
                     ->withPivot('table_name');
     }
 
     public function subusers()
     {
-        return $this->hasMany(Subuser::class);
+        return $this->hasMany(SubUser::class);
     }
 }
