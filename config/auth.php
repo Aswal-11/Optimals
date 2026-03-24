@@ -72,7 +72,7 @@ return [
 
         'subuser' => [
             'driver' => 'eloquent',
-            'model' => App\Models\Subuser::class,
+            'model' => App\Models\SubUser::class,
         ],
     ],
 

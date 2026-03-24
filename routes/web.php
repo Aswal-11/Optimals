@@ -61,6 +61,9 @@ Route::middleware('checkauth')->group(function () {
     Route::get('/role/create', [RoleController::class, 'create'])->name('role.create');
     Route::post('/role/store', [RoleController::class, 'store'])->name('role.store');
     Route::get('/role/index', [RoleController::class, 'index'])->name('roles.index');
+    Route::get('/role/{role}/edit', [RoleController::class, 'edit'])->name('role.edit');
+    Route::patch('/role/{role}/update', [RoleController::class, 'update'])->name('roles.update');
+    Route::delete('/role/{role}/delete', [RoleController::class, 'destroy'])->name('roles.destroy');
 
     Route::resource('subusers', SubUserController::class);
 

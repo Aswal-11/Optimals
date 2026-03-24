@@ -3,13 +3,14 @@
 namespace App\Http\Controllers;
 
 // Models
-use App\Http\Requests\JobStoreRequest;
-use App\Http\Requests\JobUpdateRequest;
-// Request
 use App\Models\Designation;
 use App\Models\JobPost;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+
+// Request
+use App\Http\Requests\JobStoreRequest;
+use App\Http\Requests\JobUpdateRequest;
 
 class JobPostController extends Controller
 {
@@ -22,6 +23,8 @@ class JobPostController extends Controller
 
     public function index(Request $request)
     {
+        $this->authorize('viewAny', JobPost::class);
+
         $query = JobPost::with('designation');
 
         if ($request->filled('search')) {
@@ -44,6 +47,8 @@ class JobPostController extends Controller
 
     public function create()
     {
+        $this->authorize('create', JobPost::class);
+
         $designations = Designation::pluck('title', 'id');
 
         if ($designations->isEmpty()) {
@@ -58,6 +63,8 @@ class JobPostController extends Controller
 
     public function store(JobStoreRequest $request)
     {
+        $this->authorize('create', JobPost::class);
+
         $validated = $request->validated();
         $validated['is_active'] = $request->boolean('is_active');
         JobPost::create($validated);
@@ -70,6 +77,8 @@ class JobPostController extends Controller
      */
     public function edit(JobPost $jobPost)
     {
+        $this->authorize('update', $jobPost);
+
         $designations = Designation::pluck('title', 'id');
 
         if ($jobPost && $designations) {
@@ -86,6 +95,8 @@ class JobPostController extends Controller
      */
     public function update(JobUpdateRequest $request, JobPost $jobPost)
     {
+        $this->authorize('update', $jobPost);
+
         $input = $request->validated();
         $input['is_active'] = $request->boolean('is_active');
 
@@ -106,6 +117,8 @@ class JobPostController extends Controller
      */
     public function delete(JobPost $jobPost)
     {
+        $this->authorize('delete', $jobPost);
+
         if ($jobPost) {
             Session::flash('success', 'Job Post deleted successfully.');
             $jobPost->delete();

@@ -418,7 +418,7 @@
                     Skills
                 </a>
 
-                <a href="{{ route('role.create') }}" class="nav-item {{ request()->routeIs('role.*') ? 'active' : '' }}">
+                <a href="{{ route('roles.index') }}" class="nav-item {{ request()->routeIs('roles.*') ? 'active' : '' }}">
                     <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <circle cx="12" cy="8" r="4" stroke-linecap="round" stroke-linejoin="round" />
                         <path stroke-linecap="round" stroke-linejoin="round"  d="M6 20c0-3.314 2.686-6 6-6s6 2.686 6 6" /> 

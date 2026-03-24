@@ -13,7 +13,8 @@ class RoleController extends Controller
      */
     public function index()
     {
-        return view('role.index');
+        $roles = Role::with('permissions')->get();
+        return view('role.index', compact('roles'));
     }
 
     /**
@@ -33,24 +34,17 @@ class RoleController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:255|unique:roles,name',
             'description' => 'nullable|string',
             'table_names' => 'required|array',
             'permissions' => 'required|array',
             'permissions.*' => 'exists:permissions,id',
         ]);
 
-        $input = $request->all();
+        $input = $request->only(['name', 'description']);
 
-        if (! isset($input['description'])) {
-            $input['description'] = null;
-        }
-
-        $permissions = $input['permissions'];
-        // Join all selected tables into one comma-separated string for every permission
-        $tableNameValue = implode(',', $input['table_names'] ?? []);
-
-        unset($input['permissions'], $input['table_names']);
+        $permissions = $request->permissions;
+        $tableNameValue = implode(',', $request->table_names ?? []);
 
         $role = Role::create($input);
         $pivotData = [];
@@ -63,15 +57,7 @@ class RoleController extends Controller
 
         $role->permissions()->sync($pivotData);
 
-        return redirect()->route('roles.index');
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Role $role)
-    {
-        //
+        return redirect()->route('roles.index')->with('success', 'Role created successfully');
     }
 
     /**
@@ -79,7 +65,16 @@ class RoleController extends Controller
      */
     public function edit(Role $role)
     {
-        //
+        $permissions = Permission::select('id', 'name', 'slug')->orderBy('name')->get();
+        $tableNames = config('table_access.tables');
+        
+        // Get already selected tables from first permission (they are all same in store logic)
+        $selectedTables = [];
+        if ($role->permissions()->exists()) {
+            $selectedTables = explode(',', $role->permissions()->first()->pivot->table_name);
+        }
+
+        return view('role.edit', compact('role', 'permissions', 'tableNames', 'selectedTables'));
     }
 
     /**
@@ -87,7 +82,29 @@ class RoleController extends Controller
      */
     public function update(Request $request, Role $role)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255|unique:roles,name,' . $role->id,
+            'description' => 'nullable|string',
+            'table_names' => 'required|array',
+            'permissions' => 'required|array',
+            'permissions.*' => 'exists:permissions,id',
+        ]);
+
+        $role->update($request->only(['name', 'description']));
+
+        $permissions = $request->permissions;
+        $tableNameValue = implode(',', $request->table_names ?? []);
+
+        $pivotData = [];
+        foreach ($permissions as $permissionId) {
+            $pivotData[$permissionId] = [
+                'table_name' => $tableNameValue ?: null,
+            ];
+        }
+
+        $role->permissions()->sync($pivotData);
+
+        return redirect()->route('roles.index')->with('success', 'Role updated successfully');
     }
 
     /**
@@ -95,6 +112,7 @@ class RoleController extends Controller
      */
     public function destroy(Role $role)
     {
-        //
+        $role->delete();
+        return redirect()->route('roles.index')->with('success', 'Role deleted successfully');
     }
 }
