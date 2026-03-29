@@ -23,14 +23,14 @@ class AuthController extends Controller
         // Try login as User
         if (Auth::guard('web')->attempt($credentials)) {
             $request->session()->regenerate();
-            session(['guard' => 'web']); // store active guard
+            session(['guard' => 'web']); 
             return redirect()->route('admin.dashboard');
         }
 
         // Try login as Subuser
         if (Auth::guard('subuser')->attempt($credentials)) {
             $request->session()->regenerate();
-            session(['guard' => 'subuser']); // store active guard
+            session(['guard' => 'subuser']); 
             
             return redirect()->route('admin.dashboard');
         }

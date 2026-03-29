@@ -2,41 +2,34 @@
 
 namespace App\Services;
 
-use Illuminate\Support\Facades\Auth;
+use App\Models\Admin;
+use App\Models\SubUser;
 
 class PermissionService
 {
-    public function check(string $action, string $table): bool
+    public function check($user, string $action, string $table): bool
     {
-        // 1. Main User (Full Access)
-        if (Auth::guard('web')->check()) {
+        // Admin - full access
+        if ($user instanceof Admin) {
             return true;
         }
 
-        // 2. Subuser (Role-based access)
-        if (Auth::guard('subuser')->check()) {
+        // SubUser (Role based)
+        if ($user instanceof SubUser) {
 
-            $subUser = Auth::guard('subuser')->user();
-
-            if (!$subUser->role) {
+            if (!$user->role) {
                 return false;
             }
 
-            $permissions = $subUser->role->permissions()
+            return $user->role->permissions()
                 ->where('slug', $action)
-                ->get();
-
-            foreach ($permissions as $permission) {
-                $tables = explode(',', $permission->pivot->table_name);
-                if (in_array($table, $tables)) {
-                    return true;
-                }
-            }
-
-            return false;
+                ->get()
+                ->contains(function ($permission) use ($table) {
+                    $tables = array_filter(array_map('trim', explode(',', $permission->pivot->table_name ?? '')));
+                    return in_array($table, $tables, true);
+                });
         }
 
-        // 3. Not logged in
         return false;
     }
 }

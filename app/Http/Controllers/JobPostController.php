@@ -5,12 +5,14 @@ namespace App\Http\Controllers;
 // Models
 use App\Models\Designation;
 use App\Models\JobPost;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
 
 // Request
+use Illuminate\Http\Request;
 use App\Http\Requests\JobStoreRequest;
 use App\Http\Requests\JobUpdateRequest;
+
+// Session
+use Illuminate\Support\Facades\Session;
 
 class JobPostController extends Controller
 {
@@ -61,6 +63,9 @@ class JobPostController extends Controller
         return view('jobPost.create', compact('designations'));
     }
 
+    /**
+     * Store Job Post
+     */
     public function store(JobStoreRequest $request)
     {
         $this->authorize('create', JobPost::class);

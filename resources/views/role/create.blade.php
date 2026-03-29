@@ -2,134 +2,154 @@
 
 @section('title', 'Create Role')
 
-@section('breadcrumb')
-    <div class="flex items-center gap-2 text-sm text-gray-500 font-medium">
-        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <circle cx="12" cy="8" r="4" stroke-linecap="round" stroke-linejoin="round" />
-            <path stroke-linecap="round" stroke-linejoin="round" d="M6 20c0-3.314 2.686-6 6-6s6 2.686 6 6" />
-            <path stroke-linecap="round" stroke-linejoin="round"
-                d="M17 10l4 2v4c0 2.5-1.5 4.5-4 5-2.5-.5-4-2.5-4-5v-4l4-2z" />
-        </svg>
-        <svg class="w-3 h-3 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-        </svg>
-        <span class="text-gray-900">Create</span>
-    </div>
-@endsection
-
 @section('content')
-    <div class="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
-        <div class="max-w-7xl mx-auto">
 
-            {{-- Header --}}
-            <div class="mb-6">
-                <h1 class="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">
-                    Create Role
-                </h1>
-                <p class="mt-1 text-sm text-gray-500">
-                    Define role details and assign permissions.
-                </p>
+<div class="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
+<div class="max-w-7xl mx-auto">
+
+{{-- Header --}}
+<div class="mb-6">
+    <h1 class="text-2xl sm:text-3xl font-extrabold text-gray-900">
+        Create Role
+    </h1>
+    <p class="text-sm text-gray-500 mt-1">
+        Assign permissions without selecting tables manually
+    </p>
+</div>
+
+{{-- Card --}}
+<div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 sm:p-8">
+
+    <form action="{{ route('role.store') }}" method="POST" class="space-y-6">
+        @csrf
+
+        {{-- Role Info --}}
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+
+            <div>
+                <label class="text-sm font-semibold text-gray-700">Role Name</label>
+                <input type="text" name="name"
+                    class="mt-2 w-full border border-gray-200 rounded-xl px-4 py-2.5 bg-gray-50 focus:ring-2 focus:ring-indigo-500">
             </div>
 
-            {{-- Errors --}}
-            @if ($errors->any())
-                <div class="mb-5 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-sm">
-                    <ul class="list-disc pl-5 space-y-1">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
-
-            {{-- Card --}}
-            <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 sm:p-8">
-
-                <form action="{{ route('role.store') }}" method="POST" class="space-y-6">
-                    @csrf
-
-                    {{-- Role Name --}}
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-1.5">
-                            Role Name
-                        </label>
-                        <input type="text" name="name" value="{{ old('name') }}" placeholder="e.g. Admin"
-                            class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white">
-                        @error('name')
-                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    {{-- Description --}}
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-1.5">
-                            Description
-                        </label>
-                        <textarea name="description" rows="3" placeholder="Role description"
-                            class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white">{{ old('description') }}</textarea>
-                    </div>
-
-                    {{-- Tables Multi Select --}}
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">
-                            Table Access
-                        </label>
-
-                        <select name="table_names[]" multiple
-                            class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white">
-
-                            @foreach ($tableNames as $table)
-                                <option value="{{ $table }}"
-                                    {{ collect(old('table_names'))->contains($table) ? 'selected' : '' }}>
-                                    {{ ucfirst($table) }}
-                                </option>
-                            @endforeach
-
-                        </select>
-
-                        <p class="text-xs text-gray-500 mt-1">
-                            Hold Ctrl (Windows) / Cmd (Mac) to select multiple
-                        </p>
-                    </div>
-
-                    {{-- Permissions --}}
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">
-                            Permissions
-                        </label>
-
-                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 max-h-64 overflow-y-auto pr-2">
-                            @foreach ($permissions as $permission)
-                                <label
-                                    class="flex items-center gap-2 border rounded-xl px-3 py-2 bg-gray-50 hover:bg-gray-100 cursor-pointer">
-
-                                    <input type="checkbox" name="permissions[]" value="{{ $permission->id }}"
-                                        {{ collect(old('permissions'))->contains($permission->id) ? 'checked' : '' }}
-                                        class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
-
-                                    <span class="text-sm text-gray-700">
-                                        {{ $permission->name }}
-                                    </span>
-                                </label>
-                            @endforeach
-                        </div>
-                    </div>
-
-                    {{-- Buttons --}}
-                    <div class="flex flex-col sm:flex-row gap-3 pt-2">
-                        <button type="submit"
-                            class="flex-1 bg-indigo-600 text-white py-2.5 rounded-xl text-sm font-semibold hover:bg-indigo-700 transition">
-                            Create Role
-                        </button>
-
-                        {{-- <a href="{{ route('roles.index') }}"
-                        class="flex-1 border border-gray-200 text-gray-600 py-2.5 rounded-xl text-sm font-semibold hover:bg-gray-50 transition text-center">
-                        Cancel
-                    </a> --}}
-                    </div>
-
-                </form>
+            <div>
+                <label class="text-sm font-semibold text-gray-700">Description</label>
+                <input type="text" name="description"
+                    class="mt-2 w-full border border-gray-200 rounded-xl px-4 py-2.5 bg-gray-50 focus:ring-2 focus:ring-indigo-500">
             </div>
+
         </div>
-    </div>
+
+        {{-- 🔥 PERMISSIONS TABLE --}}
+        <div>
+            <h2 class="text-lg font-bold text-gray-900 mb-4">
+                Assign Permissions for Each Table
+            </h2>
+
+            <div class="bg-gray-50 border border-gray-200 rounded-2xl overflow-x-auto">
+                @php
+                    $permissionMap = $permissions->keyBy('slug');
+                    $actions = [
+                        'View' => 'read',
+                        'Create' => 'create',
+                        'Edit' => 'update',
+                        'Delete' => 'delete',
+                    ];
+                @endphp
+
+                <table class="w-full text-sm">
+                    <thead class="bg-gray-900 text-gray-400 uppercase text-xs">
+                        <tr>
+                            <th class="px-4 py-3 text-left">Module</th>
+                            @foreach ($actions as $label => $slug)
+                                <th class="px-4 py-3 text-center">{{ $label }}</th>
+                            @endforeach
+                            <th class="px-4 py-3 text-center">Full Access</th>
+                        </tr>
+                    </thead>
+
+                    <tbody class="divide-y">
+                        @foreach ($tableNames as $table)
+                            @php
+                                $selected = old('permissions.' . $table, []);
+                            @endphp
+                            <tr class="hover:bg-indigo-50/40 transition">
+                                <td class="px-4 py-3 font-semibold text-gray-900">
+                                    {{ ucfirst($table) }}
+                                </td>
+
+                                @foreach ($actions as $slug)
+                                    <td class="px-4 py-3 text-center">
+                                        @if (isset($permissionMap[$slug]))
+                                            <input type="checkbox"
+                                                name="permissions[{{ $table }}][]"
+                                                value="{{ $permissionMap[$slug]->id }}"
+                                                class="perm-checkbox w-4 h-4 text-indigo-600 rounded"
+                                                {{ in_array($permissionMap[$slug]->id, $selected) ? 'checked' : '' }}
+                                                onchange="syncRow(this)">
+                                        @else
+                                            <span class="text-gray-300">—</span>
+                                        @endif
+                                    </td>
+                                @endforeach
+
+                                <td class="px-4 py-3 text-center">
+                                    <input type="checkbox"
+                                        class="row-checkbox w-4 h-4 text-indigo-600"
+                                        onclick="toggleRow(this)">
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+
+            @error('permissions')
+                <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
+            @enderror
+        </div>
+
+        {{-- Buttons --}}
+        <div class="flex flex-col sm:flex-row gap-3 pt-4">
+            <button type="submit"
+                class="flex-1 bg-indigo-600 text-white py-2.5 rounded-xl font-semibold hover:bg-indigo-700">
+                Create Role
+            </button>
+
+            <a href="{{ route('roles.index') }}"
+                class="flex-1 border border-gray-200 text-gray-600 py-2.5 rounded-xl text-center hover:bg-gray-50">
+                Cancel
+            </a>
+        </div>
+
+    </form>
+</div>
+
+</div>
+</div>
+
+{{-- JS --}}
+
+<script>
+
+// Full row select
+function toggleRow(el) {
+    let row = el.closest('tr');
+    let checkboxes = row.querySelectorAll('.perm-checkbox');
+
+    checkboxes.forEach(cb => cb.checked = el.checked);
+}
+
+// Individual → sync row checkbox
+function syncRow(el) {
+    let row = el.closest('tr');
+    let all = row.querySelectorAll('.perm-checkbox');
+    let checked = row.querySelectorAll('.perm-checkbox:checked');
+    let rowCheckbox = row.querySelector('.row-checkbox');
+
+    rowCheckbox.checked = (all.length === checked.length);
+}
+
+</script>
+
 @endsection

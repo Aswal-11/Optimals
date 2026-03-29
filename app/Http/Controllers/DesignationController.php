@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 // Models
-use App\Models\Designation;
 use App\Models\Skill;
-use Illuminate\Http\Request;
+use App\Models\Designation;
 
 // Requests
+use Illuminate\Http\Request;
 use App\Http\Requests\DesignationStoreRequest;
 use App\Http\Requests\DesignationUpdateRequest;
 

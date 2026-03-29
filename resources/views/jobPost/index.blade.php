@@ -19,6 +19,7 @@
                     </svg>
                     <span class="hidden sm:inline">Dashboard</span>
                 </a>
+                @can('create', \App\Models\JobPost::class)
                 <a href="{{ route('jobPost.create') }}"
                    class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-indigo-600 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 transition-all duration-150">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -26,6 +27,7 @@
                     </svg>
                     <span class="hidden sm:inline">Create Job Post</span>
                 </a>
+                @endcan
             </div>
         </div>
 
@@ -108,6 +110,7 @@
                                 </td>
 
                                 <td class="px-4 py-3.5 text-center">
+                                    @can('update', $job)
                                     <form action="{{ route('jobPost.toggleStatus', $job->id) }}" method="POST" class="inline-block">
                                         @csrf
                                         @method('PATCH')
@@ -117,10 +120,17 @@
                                             <div class="absolute left-0.5 top-0.5 w-4 h-4 bg-white rounded-full shadow peer-checked:translate-x-5 transition-transform duration-200"></div>
                                         </label>
                                     </form>
+                                    @else
+                                    <div class="relative inline-flex items-center">
+                                        <div class="w-10 h-5 bg-gray-100 rounded-full"></div>
+                                        <div class="absolute {{ $job->is_active ? 'left-5.5' : 'left-0.5' }} top-0.5 w-4 h-4 bg-white rounded-full shadow opacity-50"></div>
+                                    </div>
+                                    @endcan
                                 </td>
 
                                 <td class="px-5 py-3.5">
                                     <div class="flex items-center justify-end gap-2">
+                                        @can('update', $job)
                                         <a href="{{ route('jobPost.edit', $job->id) }}"
                                            class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-50 text-emerald-600 text-xs font-medium hover:bg-emerald-500 hover:text-white transition-all duration-150">
                                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -128,6 +138,9 @@
                                             </svg>
                                             Edit
                                         </a>
+                                        @endcan
+
+                                        @can('delete', $job)
                                         <form action="{{ route('jobPost.delete', $job->id) }}" method="POST" class="inline" onsubmit="return confirm('Delete this job post?')">
                                             @csrf
                                             @method('DELETE')
@@ -138,6 +151,7 @@
                                                 Delete
                                             </button>
                                         </form>
+                                        @endcan
                                     </div>
                                 </td>
                             </tr>
@@ -152,12 +166,12 @@
                                         </div>
                                         <p class="text-base font-bold text-gray-800 mb-1">No job posts found</p>
                                         <p class="text-sm text-gray-400 mb-5">{{ request('search') ? 'Try a different search term.' : 'Create your first job post to get started.' }}</p>
-                                        @if(!request('search'))
+                                        @can('create', \App\Models\JobPost::class)
                                             <a href="{{ route('jobPost.create') }}" class="inline-flex items-center gap-2 px-4 py-2.5 bg-indigo-600 text-white text-sm font-medium rounded-xl hover:bg-indigo-700 transition-colors">
                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
                                                 Create Job Post
                                             </a>
-                                        @endif
+                                        @endcan
                                     </div>
                                 </td>
                             </tr>
@@ -197,6 +211,7 @@
                     </div>
 
                     <div class="flex gap-2 pt-3 border-t border-gray-100">
+                        @can('update', $job)
                         <form action="{{ route('jobPost.toggleStatus', $job->id) }}" method="POST" class="flex-1">
                             @csrf
                             @method('PATCH')
@@ -204,11 +219,17 @@
                                 {{ $job->is_active ? 'Deactivate' : 'Activate' }}
                             </button>
                         </form>
+                        @endcan
+
+                        @can('update', $job)
                         <a href="{{ route('jobPost.edit', $job->id) }}"
                            class="flex-1 inline-flex items-center justify-center gap-1.5 py-2 rounded-xl bg-emerald-50 text-emerald-600 text-xs font-semibold hover:bg-emerald-500 hover:text-white transition-all duration-150">
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
                             Edit
                         </a>
+                        @endcan
+
+                        @can('delete', $job)
                         <form action="{{ route('jobPost.delete', $job->id) }}" method="POST" class="flex-1" onsubmit="return confirm('Delete this job post?')">
                             @csrf
                             @method('DELETE')
@@ -217,6 +238,7 @@
                                 Delete
                             </button>
                         </form>
+                        @endcan
                     </div>
                 </div>
             @empty

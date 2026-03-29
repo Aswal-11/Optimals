@@ -50,7 +50,7 @@
                     {{-- Age --}}
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-1.5">Age</label>
-                        <input type="number" name="age" value="{{ old('age') }}" placeholder="e.g. 28"
+                        <input type="number" name="age" value="{{ old('age') }}" placeholder="e.g. 28" min="18"
                             class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent focus:bg-white transition-all">
                         @error('age')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@enderror
                     </div>

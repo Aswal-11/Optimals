@@ -51,7 +51,6 @@
                         <tr class="bg-gray-900">
                             <th class="px-5 py-3.5 text-left text-xs font-bold text-gray-400 uppercase tracking-widest w-12">#</th>
                             <th class="px-4 py-3.5 text-left text-xs font-bold text-gray-400 uppercase tracking-widest">Role Name</th>
-                            <th class="px-4 py-3.5 text-left text-xs font-bold text-gray-400 uppercase tracking-widest">Permissions</th>
                             <th class="px-4 py-3.5 text-left text-xs font-bold text-gray-400 uppercase tracking-widest">Table Access</th>
                             <th class="px-5 py-3.5 text-right text-xs font-bold text-gray-400 uppercase tracking-widest">Actions</th>
                         </tr>
@@ -70,20 +69,7 @@
                                     </div>
                                 </td>
 
-                                <td class="px-4 py-3.5">
-                                    <div class="flex flex-wrap gap-1">
-                                        @php $perms = $role->permissions->take(3); @endphp
-                                        @foreach($perms as $permission)
-                                            <span class="inline-flex items-center px-2 py-0.5 rounded-md bg-indigo-50 text-indigo-700 text-[10px] font-bold uppercase tracking-wider">
-                                                {{ $permission->name }}
-                                            </span>
-                                        @endforeach
-                                        @if($role->permissions->count() > 3)
-                                            <span class="text-[10px] font-bold text-gray-400 px-1">+{{ $role->permissions->count() - 3 }} more</span>
-                                        @endif
-                                    </div>
-                                </td>
-
+                              
                                 <td class="px-4 py-3.5">
                                     @php
                                         $tables = [];

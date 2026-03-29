@@ -72,28 +72,6 @@
                             @enderror
                         </div>
 
-                        {{-- Tables Multi Select --}}
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">
-                                Table Access
-                            </label>
-
-                            <select name="table_names[]" multiple
-                                class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white shadow-sm h-[42px] overflow-hidden hover:overflow-y-auto transition-all">
-
-                                @foreach ($tableNames as $table)
-                                    <option value="{{ $table }}"
-                                        {{ collect(old('table_names', $selectedTables))->contains($table) ? 'selected' : '' }}>
-                                        {{ ucfirst($table) }}
-                                    </option>
-                                @endforeach
-
-                            </select>
-
-                            <p class="text-[10px] text-gray-400 mt-1 uppercase tracking-widest font-bold">
-                                Hold Ctrl/Cmd for multiple selection
-                            </p>
-                        </div>
                     </div>
 
                     {{-- Description --}}
@@ -107,26 +85,71 @@
 
                     {{-- Permissions --}}
                     <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2 flex items-center justify-between">
-                            <span>Permissions</span>
-                            <span class="text-[10px] font-bold text-indigo-500 bg-indigo-50 px-2 py-0.5 rounded-md uppercase">Select relevant actions</span>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                            Permission Matrix
                         </label>
 
-                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 max-h-72 overflow-y-auto pr-2 custom-scrollbar">
-                            @foreach ($permissions as $permission)
-                                <label
-                                    class="group flex items-center gap-2 border rounded-xl px-3 py-2.5 bg-gray-50 hover:bg-white hover:border-indigo-400 hover:shadow-sm cursor-pointer transition-all duration-150">
+                        <div class="bg-gray-50 border border-gray-200 rounded-2xl overflow-x-auto">
+                            @php
+                                $permissionMap = $permissions->keyBy('slug');
+                                $actions = [
+                                    'View' => 'read',
+                                    'Create' => 'create',
+                                    'Edit' => 'update',
+                                    'Delete' => 'delete',
+                                ];
+                            @endphp
 
-                                    <input type="checkbox" name="permissions[]" value="{{ $permission->id }}"
-                                        {{ collect(old('permissions', $role->permissions->pluck('id')))->contains($permission->id) ? 'checked' : '' }}
-                                        class="w-4 h-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 transition-all">
+                            <table class="w-full text-sm">
+                                <thead class="bg-gray-900 text-gray-400 uppercase text-xs">
+                                    <tr>
+                                        <th class="px-4 py-3 text-left">Module</th>
+                                        @foreach ($actions as $label => $slug)
+                                            <th class="px-4 py-3 text-center">{{ $label }}</th>
+                                        @endforeach
+                                        <th class="px-4 py-3 text-center">Full Access</th>
+                                    </tr>
+                                </thead>
 
-                                    <span class="text-sm text-gray-600 group-hover:text-indigo-700 font-medium select-none">
-                                        {{ $permission->name }}
-                                    </span>
-                                </label>
-                            @endforeach
+                                <tbody class="divide-y">
+                                    @foreach ($tableNames as $table)
+                                        @php
+                                            $selected = old('permissions.' . $table, $selectedPermissions[$table] ?? []);
+                                        @endphp
+                                        <tr class="hover:bg-indigo-50/40 transition">
+                                            <td class="px-4 py-3 font-semibold text-gray-900">
+                                                {{ ucfirst($table) }}
+                                            </td>
+
+                                            @foreach ($actions as $slug)
+                                                <td class="px-4 py-3 text-center">
+                                                    @if (isset($permissionMap[$slug]))
+                                                        <input type="checkbox"
+                                                            name="permissions[{{ $table }}][]"
+                                                            value="{{ $permissionMap[$slug]->id }}"
+                                                            class="perm-checkbox w-4 h-4 text-indigo-600 rounded"
+                                                            {{ in_array($permissionMap[$slug]->id, $selected) ? 'checked' : '' }}
+                                                            onchange="syncRow(this)">
+                                                    @else
+                                                        <span class="text-gray-300">—</span>
+                                                    @endif
+                                                </td>
+                                            @endforeach
+
+                                            <td class="px-4 py-3 text-center">
+                                                <input type="checkbox"
+                                                    class="row-checkbox w-4 h-4 text-indigo-600"
+                                                    onclick="toggleRow(this)">
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
                         </div>
+
+                        @error('permissions')
+                            <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
+                        @enderror
                     </div>
 
                     {{-- Buttons --}}

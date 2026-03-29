@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Permission;
 use App\Models\Role;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class RoleController extends Controller
 {
@@ -14,6 +15,7 @@ class RoleController extends Controller
     public function index()
     {
         $roles = Role::with('permissions')->get();
+
         return view('role.index', compact('roles'));
     }
 
@@ -36,28 +38,17 @@ class RoleController extends Controller
         $request->validate([
             'name' => 'required|string|max:255|unique:roles,name',
             'description' => 'nullable|string',
-            'table_names' => 'required|array',
             'permissions' => 'required|array',
-            'permissions.*' => 'exists:permissions,id',
+            'permissions.*' => 'array',
+            'permissions.*.*' => 'exists:permissions,id',
         ]);
 
-        $input = $request->only(['name', 'description']);
+        $role = Role::create($request->only(['name', 'description']));
 
-        $permissions = $request->permissions;
-        $tableNameValue = implode(',', $request->table_names ?? []);
+        $this->syncRolePermissions($role, $request->input('permissions', []));
 
-        $role = Role::create($input);
-        $pivotData = [];
-
-        foreach ($permissions as $permissionId) {
-            $pivotData[$permissionId] = [
-                'table_name' => $tableNameValue ?: null,
-            ];
-        }
-
-        $role->permissions()->sync($pivotData);
-
-        return redirect()->route('roles.index')->with('success', 'Role created successfully');
+        return redirect()->route('roles.index')
+            ->with('success', 'Role created successfully');
     }
 
     /**
@@ -67,14 +58,21 @@ class RoleController extends Controller
     {
         $permissions = Permission::select('id', 'name', 'slug')->orderBy('name')->get();
         $tableNames = config('table_access.tables');
-        
-        // Get already selected tables from first permission (they are all same in store logic)
-        $selectedTables = [];
-        if ($role->permissions()->exists()) {
-            $selectedTables = explode(',', $role->permissions()->first()->pivot->table_name);
+
+        $selectedPermissions = [];
+        foreach ($role->permissions as $permission) {
+            $tables = explode(',', $permission->pivot->table_name);
+            foreach ($tables as $table) {
+                $table = trim($table);
+                if (! $table) {
+                    continue;
+                }
+
+                $selectedPermissions[$table][] = $permission->id;
+            }
         }
 
-        return view('role.edit', compact('role', 'permissions', 'tableNames', 'selectedTables'));
+        return view('role.edit', compact('role', 'permissions', 'tableNames', 'selectedPermissions'));
     }
 
     /**
@@ -83,26 +81,16 @@ class RoleController extends Controller
     public function update(Request $request, Role $role)
     {
         $request->validate([
-            'name' => 'required|string|max:255|unique:roles,name,' . $role->id,
+            'name' => 'required|string|max:255|unique:roles,name,'.$role->id,
             'description' => 'nullable|string',
-            'table_names' => 'required|array',
             'permissions' => 'required|array',
-            'permissions.*' => 'exists:permissions,id',
+            'permissions.*' => 'array',
+            'permissions.*.*' => 'exists:permissions,id',
         ]);
 
         $role->update($request->only(['name', 'description']));
 
-        $permissions = $request->permissions;
-        $tableNameValue = implode(',', $request->table_names ?? []);
-
-        $pivotData = [];
-        foreach ($permissions as $permissionId) {
-            $pivotData[$permissionId] = [
-                'table_name' => $tableNameValue ?: null,
-            ];
-        }
-
-        $role->permissions()->sync($pivotData);
+        $this->syncRolePermissions($role, $request->input('permissions', []));
 
         return redirect()->route('roles.index')->with('success', 'Role updated successfully');
     }
@@ -113,6 +101,52 @@ class RoleController extends Controller
     public function destroy(Role $role)
     {
         $role->delete();
+
         return redirect()->route('roles.index')->with('success', 'Role deleted successfully');
+    }
+
+    private function syncRolePermissions(Role $role, array $permissions): void
+    {
+        $insertData = $this->preparePermissionData($permissions, $role->id);
+
+        DB::transaction(function () use ($role, $insertData) {
+            DB::table('role_permission')
+                ->where('role_id', $role->id)
+                ->delete();
+
+            if (! empty($insertData)) {
+                DB::table('role_permission')->insert($insertData);
+            }
+        });
+    }
+
+    private function preparePermissionData(array $permissions, int $roleId): array
+    {
+        $now = now();
+        $rows = [];
+
+        foreach ($permissions as $table => $permissionIds) {
+            if (! is_array($permissionIds)) {
+                continue;
+            }
+
+            foreach (array_unique($permissionIds) as $permissionId) {
+                $permissionId = (int) $permissionId;
+
+                if ($permissionId <= 0) {
+                    continue;
+                }
+
+                $rows[] = [
+                    'role_id' => $roleId,
+                    'permission_id' => $permissionId,
+                    'table_name' => $table,
+                    'created_at' => $now,
+                    'updated_at' => $now,
+                ];
+            }
+        }
+
+        return array_values(array_unique($rows, SORT_REGULAR));
     }
 }

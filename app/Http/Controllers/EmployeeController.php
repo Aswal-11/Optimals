@@ -34,6 +34,7 @@ class EmployeeController extends Controller
      */
     public function index(Request $request)
     {
+        $this->authorize('viewAny', Employee::class);
         $search = $request->query('search');
 
         $employees = Employee::with('designation')
@@ -56,6 +57,7 @@ class EmployeeController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', Employee::class);
         $designations = Designation::pluck('title', 'id');
 
         return view('employee.create', compact('designations'));
@@ -66,6 +68,7 @@ class EmployeeController extends Controller
      */
     public function store(EmployeeStoreRequest $request)
     {
+        $this->authorize('create', Employee::class);
         $input = $request->validated();
         $input['password'] = Hash::make($input['password']);
 
@@ -85,6 +88,7 @@ class EmployeeController extends Controller
      */
     public function edit(Employee $employee)
     {
+        $this->authorize('update', $employee);
         $designations = Designation::pluck('title', 'id');
 
         return view('employee.edit', compact('employee', 'designations'));
@@ -95,6 +99,7 @@ class EmployeeController extends Controller
      */
     public function update(EmployeeUpdateRequest $request, Employee $employee)
     {
+        $this->authorize('update', $employee);
         // Validation
         $input = $request->validated();
 
@@ -115,6 +120,7 @@ class EmployeeController extends Controller
      */
     public function delete(Employee $employee)
     {
+        $this->authorize('delete', $employee);
         $employee->delete();
 
         return redirect()->route('employee.index')
