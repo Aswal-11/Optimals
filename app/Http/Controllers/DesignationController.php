@@ -17,10 +17,12 @@ use Illuminate\Support\Facades\Session;
 class DesignationController extends Controller
 {
     /**
-     * Show Designation Detail
+     * Show Designation 
      */
     public function show(Designation $designation)
     {
+        $this->authorize('view', $designation);
+
         $designation->load('skills');
 
         return view('designation.show', compact('designation'));
@@ -31,6 +33,8 @@ class DesignationController extends Controller
      */
     public function index(Request $request)
     {
+        $this->authorize('viewAny', Designation::class);
+
         $search = $request->query('search');
 
         $designations = Designation::with('skills')
@@ -44,10 +48,12 @@ class DesignationController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Create Designation
      */
     public function create()
     {
+        $this->authorize('create', Designation::class);
+
         $skills = Skill::pluck('name', 'id');
 
         return view('designation.create', compact('skills'));
@@ -58,6 +64,8 @@ class DesignationController extends Controller
      */
     public function store(DesignationStoreRequest $request)
     {
+        $this->authorize('create', Designation::class);
+
         $input = $request->validated();
         $skill_ids = $input['skill_id'] ?? [];
         unset($input['skill_id']);
@@ -81,6 +89,8 @@ class DesignationController extends Controller
     public function edit($id)
     {
         $designation = Designation::with('skills')->findOrFail($id);
+        $this->authorize('update', $designation);
+
         $skills = Skill::pluck('name', 'id');
 
         return view('designation.edit', compact('designation', 'skills'));
@@ -91,12 +101,14 @@ class DesignationController extends Controller
      */
     public function update(DesignationUpdateRequest $request, $id)
     {
+        $designation = Designation::findOrFail($id);
+        $this->authorize('update', $designation);
+
         $input = $request->validated();
         $skill_ids = $input['skill_id'] ?? [];
         unset($input['skill_id']);
 
         if ($input) {
-            $designation = Designation::findOrFail($id);
             $designation->update($input);
             $designation->skills()->sync($skill_ids);
             Session::flash('success', 'Designation updated successfully ');
@@ -112,6 +124,8 @@ class DesignationController extends Controller
      */
     public function delete(Designation $designation)
     {
+        $this->authorize('delete', $designation);
+
         $designation->delete();
 
         Session::flash('success', 'Designation deleted successfully.');

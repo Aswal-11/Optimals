@@ -14,6 +14,8 @@ class RoleController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAny', Role::class);
+
         $roles = Role::with('permissions')->get();
 
         return view('role.index', compact('roles'));
@@ -24,6 +26,8 @@ class RoleController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', Role::class);
+
         $permissions = Permission::select('id', 'name', 'slug')->orderBy('name')->get();
         $tableNames = config('table_access.tables');
 
@@ -35,6 +39,8 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create', Role::class);
+
         $request->validate([
             'name' => 'required|string|max:255|unique:roles,name',
             'description' => 'nullable|string',
@@ -56,6 +62,8 @@ class RoleController extends Controller
      */
     public function edit(Role $role)
     {
+        $this->authorize('update', $role);
+
         $permissions = Permission::select('id', 'name', 'slug')->orderBy('name')->get();
         $tableNames = config('table_access.tables');
 
@@ -80,6 +88,8 @@ class RoleController extends Controller
      */
     public function update(Request $request, Role $role)
     {
+        $this->authorize('update', $role);
+
         $request->validate([
             'name' => 'required|string|max:255|unique:roles,name,'.$role->id,
             'description' => 'nullable|string',
@@ -100,6 +110,8 @@ class RoleController extends Controller
      */
     public function destroy(Role $role)
     {
+        $this->authorize('delete', $role);
+
         $role->delete();
 
         return redirect()->route('roles.index')->with('success', 'Role deleted successfully');

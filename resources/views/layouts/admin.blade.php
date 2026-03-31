@@ -390,34 +390,43 @@
                 <div class="nav-sep"></div>
                 <div class="nav-group-label">Manage</div>
 
+                @can('viewAny', \App\Models\Employee::class)
                 <a href="{{ route('employee.index') }}" class="nav-item {{ request()->routeIs('employee.*') ? 'active' : '' }}">
                     <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
                     </svg>
                     Employees
                 </a>
+                @endcan
 
+                @can('viewAny', \App\Models\JobPost::class)
                 <a href="{{ route('jobPost.index') }}" class="nav-item {{ request()->routeIs('jobPost.*') ? 'active' : '' }}">
                     <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
                     </svg>
                     Job Posts
                 </a>
+                @endcan
 
+                @can('viewAny', \App\Models\Designation::class)
                 <a href="{{ route('designation.index') }}" class="nav-item {{ request()->routeIs('designation.*') ? 'active' : '' }}">
                     <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l5 5a2 2 0 01.586 1.414V19a2 2 0 01-2 2H7a3 3 0 01-3-3V6a3 3 0 013-3z"/>
                     </svg>
                     Designations
                 </a>
+                @endcan
 
+                @can('viewAny', \App\Models\Skill::class)
                 <a href="{{ route('skill.create') }}" class="nav-item {{ request()->routeIs('skill.*') ? 'active' : '' }}">
                     <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
                     </svg>
                     Skills
                 </a>
+                @endcan
 
+                @can('viewAny', \App\Models\Role::class)
                 <a href="{{ route('roles.index') }}" class="nav-item {{ request()->routeIs('roles.*') ? 'active' : '' }}">
                     <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <circle cx="12" cy="8" r="4" stroke-linecap="round" stroke-linejoin="round" />
@@ -426,7 +435,9 @@
                     </svg>
                     Roles
                 </a>
+                @endcan
 
+                @can('viewAny', \App\Models\SubUser::class)
                 <a href="{{ route('subusers.index') }}" class="nav-item {{ request()->routeIs('subusers.*') ? 'active' : '' }}">
                     <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <circle cx="12" cy="8" r="4" stroke-linecap="round" stroke-linejoin="round" />
@@ -435,6 +446,7 @@
                     </svg>
                     Subusers
                 </a>
+                @endcan
             </div>
 
             <div class="sidebar-footer">

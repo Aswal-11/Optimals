@@ -4,6 +4,8 @@ return [
         'designations',
         'skills',
         'job_posts',
-        'employees', 
+        'employees',
+        'sub_users',
+        'roles',
     ],
 ];

@@ -13,6 +13,8 @@ class SubUserController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAny', SubUser::class);
+
         $subusers = SubUser::with('role')->get();
         return view('subusers.index', compact('subusers'));
     }
@@ -22,6 +24,8 @@ class SubUserController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', SubUser::class);
+
         $roles = Role::orderBy('name')->get();
         return view('subusers.create', compact('roles'));
     }
@@ -52,6 +56,8 @@ class SubUserController extends Controller
      */
     public function show(SubUser $subuser)
     {
+        $this->authorize('view', $subuser);
+
         return view('subusers.show', compact('subuser'));
     }
 
@@ -60,6 +66,8 @@ class SubUserController extends Controller
      */
     public function edit(SubUser $subuser)
     {
+        $this->authorize('update', $subuser);
+
         $roles = Role::orderBy('name')->get();
         return view('subusers.edit', compact('subuser', 'roles'));
     }
@@ -69,6 +77,8 @@ class SubUserController extends Controller
      */
     public function update(Request $request, SubUser $subuser)
     {
+        $this->authorize('update', $subuser);
+
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:sub_users,email,' . $subuser->id,
@@ -90,6 +100,8 @@ class SubUserController extends Controller
      */
     public function destroy(SubUser $subuser)
     {
+        $this->authorize('delete', $subuser);
+
         $subuser->delete();
         return redirect()->route('subusers.index')->with('success', 'Subuser deleted successfully');
     }

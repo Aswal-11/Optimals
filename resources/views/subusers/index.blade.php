@@ -33,6 +33,7 @@
                     </svg>
                     <span class="hidden sm:inline">Dashboard</span>
                 </a>
+                @can('create', \App\Models\SubUser::class)
                 <a href="{{ route('subusers.create') }}"
                    class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-indigo-600 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 transition-all duration-150">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -40,6 +41,7 @@
                     </svg>
                     <span class="hidden sm:inline">Add Subuser</span>
                 </a>
+                @endcan
             </div>
         </div>
 
@@ -86,6 +88,7 @@
 
                                 <td class="px-5 py-3.5">
                                     <div class="flex items-center justify-end gap-2">
+                                        @can('view', $subuser)
                                         <a href="{{ route('subusers.show', $subuser->id) }}"
                                            class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-50 text-indigo-600 text-xs font-medium hover:bg-indigo-600 hover:text-white transition-all duration-150">
                                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -94,6 +97,8 @@
                                             </svg>
                                             View
                                         </a>
+                                        @endcan
+                                        @can('update', $subuser)
                                         <a href="{{ route('subusers.edit', $subuser->id) }}"
                                            class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-50 text-emerald-600 text-xs font-medium hover:bg-emerald-500 hover:text-white transition-all duration-150">
                                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -101,6 +106,8 @@
                                             </svg>
                                             Edit
                                         </a>
+                                        @endcan
+                                        @can('delete', $subuser)
                                         <form action="{{ route('subusers.destroy', $subuser->id) }}" method="POST" class="inline">
                                             @csrf
                                             @method('DELETE')
@@ -170,6 +177,7 @@
                     </div>
 
                     <div class="flex gap-2 pt-3 border-t border-gray-100">
+                        @can('view', $subuser)
                         <a href="{{ route('subusers.show', $subuser->id) }}"
                            class="flex-1 inline-flex items-center justify-center gap-1.5 py-2 rounded-xl bg-indigo-50 text-indigo-600 text-xs font-semibold hover:bg-indigo-600 hover:text-white transition-all duration-150">
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -178,6 +186,8 @@
                             </svg>
                             View
                         </a>
+                        @endcan
+                        @can('update', $subuser)
                         <a href="{{ route('subusers.edit', $subuser->id) }}"
                            class="flex-1 inline-flex items-center justify-center gap-1.5 py-2 rounded-xl bg-emerald-50 text-emerald-600 text-xs font-semibold hover:bg-emerald-500 hover:text-white transition-all duration-150">
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -185,6 +195,8 @@
                             </svg>
                             Edit
                         </a>
+                        @endcan
+                        @can('delete', $subuser)
                         <form action="{{ route('subusers.destroy', $subuser->id) }}" method="POST" class="flex-1">
                             @csrf
                             @method('DELETE')
@@ -197,6 +209,7 @@
                                 Delete
                             </button>
                         </form>
+                        @endcan
                     </div>
                 </div>
             @empty

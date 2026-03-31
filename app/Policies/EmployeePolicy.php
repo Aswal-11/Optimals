@@ -5,7 +5,7 @@ namespace App\Policies;
 // Models
 
 // Services
-use App\services\PermissionService;
+use App\Services\PermissionService;
 
 class EmployeePolicy
 {
