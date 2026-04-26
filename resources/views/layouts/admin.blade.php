@@ -368,9 +368,7 @@
         <aside class="sidebar admin-core-ui">
             <div class="sidebar-header">
                 <div class="sidebar-logo">
-                    <svg width="14" height="14" fill="none" stroke="#fafafa" stroke-width="2.5" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10"/>
-                    </svg>
+                    <x-icons.logo width="14" height="14" stroke="#fafafa" stroke-width="2.5" />
                 </div>
                 <div>
                     <div class="sidebar-brand-name">OIU</div>
@@ -381,9 +379,7 @@
                 <div class="nav-group-label">Overview</div>
 
                 <a href="{{ route('admin.dashboard') }}" class="nav-item {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
-                    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
-                    </svg>
+                    <x-icons.home stroke-width="2" />
                     Dashboard
                 </a>
 
@@ -392,58 +388,42 @@
 
                 @can('viewAny', \App\Models\Employee::class)
                 <a href="{{ route('employee.index') }}" class="nav-item {{ request()->routeIs('employee.*') ? 'active' : '' }}">
-                    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
-                    </svg>
+                    <x-icons.users stroke-width="2" />
                     Employees
                 </a>
                 @endcan
 
                 @can('viewAny', \App\Models\JobPost::class)
                 <a href="{{ route('jobPost.index') }}" class="nav-item {{ request()->routeIs('jobPost.*') ? 'active' : '' }}">
-                    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                    </svg>
+                    <x-icons.briefcase stroke-width="2" />
                     Job Posts
                 </a>
                 @endcan
 
                 @can('viewAny', \App\Models\Designation::class)
                 <a href="{{ route('designation.index') }}" class="nav-item {{ request()->routeIs('designation.*') ? 'active' : '' }}">
-                    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l5 5a2 2 0 01.586 1.414V19a2 2 0 01-2 2H7a3 3 0 01-3-3V6a3 3 0 013-3z"/>
-                    </svg>
+                    <x-icons.tag stroke-width="2" />
                     Designations
                 </a>
                 @endcan
 
                 @can('viewAny', \App\Models\Skill::class)
                 <a href="{{ route('skill.create') }}" class="nav-item {{ request()->routeIs('skill.*') ? 'active' : '' }}">
-                    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
-                    </svg>
+                    <x-icons.bulb stroke-width="2" />
                     Skills
                 </a>
                 @endcan
 
                 @can('viewAny', \App\Models\Role::class)
                 <a href="{{ route('roles.index') }}" class="nav-item {{ request()->routeIs('roles.*') ? 'active' : '' }}">
-                    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <circle cx="12" cy="8" r="4" stroke-linecap="round" stroke-linejoin="round" />
-                        <path stroke-linecap="round" stroke-linejoin="round"  d="M6 20c0-3.314 2.686-6 6-6s6 2.686 6 6" /> 
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M17 10l4 2v4c0 2.5-1.5 4.5-4 5-2.5-.5-4-2.5-4-5v-4l4-2z" />
-                    </svg>
+                    <x-icons.user-shield stroke-width="2" />
                     Roles
                 </a>
                 @endcan
 
                 @can('viewAny', \App\Models\SubUser::class)
                 <a href="{{ route('subusers.index') }}" class="nav-item {{ request()->routeIs('subusers.*') ? 'active' : '' }}">
-                    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <circle cx="12" cy="8" r="4" stroke-linecap="round" stroke-linejoin="round" />
-                        <path stroke-linecap="round" stroke-linejoin="round"  d="M6 20c0-3.314 2.686-6 6-6s6 2.686 6 6" /> 
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M17 10l4 2v4c0 2.5-1.5 4.5-4 5-2.5-.5-4-2.5-4-5v-4l4-2z" />
-                    </svg>
+                    <x-icons.user-shield stroke-width="2" />
                     Subusers
                 </a>
                 @endcan
@@ -459,9 +439,7 @@
                         <div class="user-name">{{ auth()->user()->name ?? 'Admin' }}</div>
                         <div class="user-email" style="color: #ef4444; font-weight: 500;">Click to Logout</div>
                     </div>
-                    <svg width="14" height="14" fill="none" stroke="#ef4444" stroke-width="2" viewBox="0 0 24 24" style="flex-shrink:0">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
-                    </svg>
+                    <x-icons.logout width="14" height="14" stroke="#ef4444" stroke-width="2" style="flex-shrink:0" />
                 </div>
             </div>
         </aside>
@@ -473,9 +451,7 @@
             <header class="topbar admin-core-ui">
                 <div style="display: flex; align-items: center; gap: 12px;">
                     <button class="icon-btn mobile-toggle" style="display: none;" onclick="toggleSidebar()">
-                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
-                        </svg>
+                        <x-icons.menu stroke-width="2" />
                     </button>
                     <div class="breadcrumb">
                         @yield('breadcrumb')
@@ -487,9 +463,7 @@
                     <form action="{{ route('logout') }}" method="POST" style="margin: 0; padding: 0;">
                         @csrf
                         <button type="submit" class="btn btn-outline" style="border-color:#fca5a5; color:#dc2626; margin-left:10px;">
-                            <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
-                            </svg>
+                            <x-icons.logout stroke-width="2.5" />
                             Logout
                         </button>
                     </form>
@@ -500,15 +474,11 @@
             @if(session('success'))
             <div id="flash-message">
                 <div style="width:20px;height:20px;border-radius:50%;background:#f0fdf4;border:1px solid #bbf7d0;display:flex;align-items:center;justify-content:center;flex-shrink:0">
-                    <svg width="10" height="10" fill="none" stroke="#16a34a" stroke-width="3" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
-                    </svg>
+                    <x-icons.check width="10" height="10" stroke="#16a34a" stroke-width="3" />
                 </div>
                 <p style="font-size:13px;color:var(--foreground);flex:1;font-weight:500;">{{ session('success') }}</p>
                 <button onclick="this.closest('#flash-message').remove()" style="background:none;border:none;cursor:pointer;color:var(--muted-fg);display:flex;padding:0">
-                    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
-                    </svg>
+                    <x-icons.x width="14" height="14" stroke="currentColor" stroke-width="2" />
                 </button>
             </div>
             @endif

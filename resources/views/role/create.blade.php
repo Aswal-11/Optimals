@@ -20,6 +20,8 @@
 {{-- Card --}}
 <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 sm:p-8">
 
+   
+
     <form action="{{ route('role.store') }}" method="POST" class="space-y-6">
         @csrf
 
@@ -27,15 +29,29 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
 
             <div>
-                <label class="text-sm font-semibold text-gray-700">Role Name</label>
+                <label class="text-sm font-semibold text-gray-700">Role Name <span class="text-red-500">*</span></label>
                 <input type="text" name="name"
-                    class="mt-2 w-full border border-gray-200 rounded-xl px-4 py-2.5 bg-gray-50 focus:ring-2 focus:ring-indigo-500">
+                    class="mt-2 w-full border {{ $errors->has('name') ? 'border-red-500 ring-1 ring-red-500' : 'border-gray-200' }} rounded-xl px-4 py-2.5 bg-gray-50 focus:ring-2 focus:ring-indigo-500"
+                    value="{{ old('name') }}">
+                @error('name')
+                    <p class="text-red-600 text-xs mt-1 flex items-center gap-1">
+                        <x-icons.error class="w-3 h-3" />
+                        {{ $message }}
+                    </p>
+                @enderror
             </div>
 
             <div>
-                <label class="text-sm font-semibold text-gray-700">Description</label>
+                <label class="text-sm font-semibold text-gray-700">Description <span class="text-red-500">*</span></label>
                 <input type="text" name="description"
-                    class="mt-2 w-full border border-gray-200 rounded-xl px-4 py-2.5 bg-gray-50 focus:ring-2 focus:ring-indigo-500">
+                    class="mt-2 w-full border {{ $errors->has('description') ? 'border-red-500 ring-1 ring-red-500' : 'border-gray-200' }} rounded-xl px-4 py-2.5 bg-gray-50 focus:ring-2 focus:ring-indigo-500"
+                    value="{{ old('description') }}">
+                @error('description')
+                    <p class="text-red-600 text-xs mt-1 flex items-center gap-1">
+                        <x-icons.error class="w-3 h-3" />
+                        {{ $message }}
+                    </p>
+                @enderror
             </div>
 
         </div>
@@ -43,7 +59,7 @@
         {{-- 🔥 PERMISSIONS TABLE --}}
         <div>
             <h2 class="text-lg font-bold text-gray-900 mb-4">
-                Assign Permissions for Each Table
+                Assign Permissions for Each Table <span class="text-red-500">*</span>
             </h2>
 
             <div class="bg-gray-50 border border-gray-200 rounded-2xl overflow-x-auto">
@@ -105,7 +121,10 @@
             </div>
 
             @error('permissions')
-                <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
+                <p class="text-red-600 text-xs mt-2 flex items-center gap-1">
+                    <x-icons.error class="w-3 h-3" />
+                    {{ $message }}
+                </p>
             @enderror
         </div>
 

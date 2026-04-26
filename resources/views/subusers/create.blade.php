@@ -4,13 +4,10 @@
 
 @section('breadcrumb')
     <div class="flex items-center gap-2 text-sm text-gray-500 font-medium">
-        <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <circle cx="12" cy="8" r="4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 20c0-3.314 2.686-6 6-6s6 2.686 6 6"/>
-        </svg>
-        <svg class="w-3 h-3 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        <x-icons.user class="w-4 h-4 text-gray-400" />
+        <x-icons.chevron-right class="w-3 h-3 text-gray-300" />
         <a href="{{ route('subusers.index') }}" class="hover:text-gray-700 transition-colors">Subusers</a>
-        <svg class="w-3 h-3 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        <x-icons.chevron-right class="w-3 h-3 text-gray-300" />
         <span class="text-gray-900">Create</span>
     </div>
 @endsection

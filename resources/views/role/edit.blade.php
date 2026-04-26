@@ -4,17 +4,10 @@
 
 @section('breadcrumb')
     <div class="flex items-center gap-2 text-sm text-gray-500 font-medium">
-        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" class="w-4 h-4">
-            <circle cx="12" cy="8" r="4" stroke-linecap="round" stroke-linejoin="round" />
-            <path stroke-linecap="round" stroke-linejoin="round" d="M6 20c0-3.314 2.686-6 6-6s6 2.686 6 6" />
-        </svg>
-        <svg class="w-3 h-3 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-        </svg>
+        <x-icons.user class="w-4 h-4" stroke-width="2" />
+        <x-icons.chevron-right class="w-3 h-3 text-gray-300" />
         <a href="{{ route('roles.index') }}" class="hover:text-indigo-600 transition-colors">Roles</a>
-        <svg class="w-3 h-3 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-        </svg>
+        <x-icons.chevron-right class="w-3 h-3 text-gray-300" />
         <span class="text-gray-900">Edit</span>
     </div>
 @endsection
@@ -34,9 +27,7 @@
                     </p>
                 </div>
                 <a href="{{ route('roles.index') }}" class="text-sm font-medium text-gray-500 hover:text-indigo-600 flex items-center gap-1.5">
-                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
-                    </svg>
+                     <x-icons.arrow-left class="w-4 h-4" />
                     Back to List
                 </a>
             </div>
@@ -63,12 +54,15 @@
                         {{-- Role Name --}}
                         <div>
                             <label class="block text-sm font-semibold text-gray-700 mb-1.5">
-                                Role Name
+                                Role Name <span class="text-red-500">*</span>
                             </label>
                             <input type="text" name="name" value="{{ old('name', $role->name) }}" placeholder="e.g. Admin"
-                                class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white shadow-sm transition-all">
+                                class="w-full border {{ $errors->has('name') ? 'border-red-500 ring-1 ring-red-500' : 'border-gray-200' }} rounded-xl px-4 py-2.5 text-sm bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white shadow-sm transition-all">
                             @error('name')
-                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                                <p class="text-red-600 text-xs mt-1 flex items-center gap-1">
+                                    <x-icons.error class="w-3 h-3" />
+                                    {{ $message }}
+                                </p>
                             @enderror
                         </div>
 
@@ -80,7 +74,13 @@
                             Description
                         </label>
                         <textarea name="description" rows="3" placeholder="Describe what this role is for..."
-                            class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white shadow-sm transition-all">{{ old('description', $role->description) }}</textarea>
+                            class="w-full border {{ $errors->has('description') ? 'border-red-500 ring-1 ring-red-500' : 'border-gray-200' }} rounded-xl px-4 py-2.5 text-sm bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white shadow-sm transition-all">{{ old('description', $role->description) }}</textarea>
+                        @error('description')
+                            <p class="text-red-600 text-xs mt-1 flex items-center gap-1">
+                                <x-icons.error class="w-3 h-3" />
+                                {{ $message }}
+                            </p>
+                        @enderror
                     </div>
 
                     {{-- Permissions --}}
@@ -148,7 +148,10 @@
                         </div>
 
                         @error('permissions')
-                            <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
+                            <p class="text-red-600 text-xs mt-2 flex items-center gap-1">
+                                <x-icons.error class="w-3 h-3" />
+                                {{ $message }}
+                            </p>
                         @enderror
                     </div>
 
