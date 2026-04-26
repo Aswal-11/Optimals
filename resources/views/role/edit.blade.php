@@ -173,20 +173,34 @@
         </div>
     </div>
     
-    <style>
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 4px;
+    <script>
+        // Full row select
+        function toggleRow(el) {
+            let row = el.closest('tr');
+            let checkboxes = row.querySelectorAll('.perm-checkbox');
+            checkboxes.forEach(cb => cb.checked = el.checked);
         }
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 10px;
+
+        // Individual → sync row checkbox
+        function syncRow(el) {
+            let row = el.closest('tr');
+            let all = row.querySelectorAll('.perm-checkbox');
+            let checked = row.querySelectorAll('.perm-checkbox:checked');
+            let rowCheckbox = row.querySelector('.row-checkbox');
+
+            if (rowCheckbox) {
+                rowCheckbox.checked = (all.length > 0 && all.length === checked.length);
+            }
         }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #e2e8f0;
-            border-radius: 10px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: #cbd5e1;
-        }
-    </style>
+
+        // Initialize state on load
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.row-checkbox').forEach(rowCheckbox => {
+                let row = rowCheckbox.closest('tr');
+                let all = row.querySelectorAll('.perm-checkbox');
+                let checked = row.querySelectorAll('.perm-checkbox:checked');
+                rowCheckbox.checked = (all.length > 0 && all.length === checked.length);
+            });
+        });
+    </script>
 @endsection

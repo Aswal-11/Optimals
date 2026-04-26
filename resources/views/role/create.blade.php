@@ -150,25 +150,33 @@
 {{-- JS --}}
 
 <script>
+    // Full row select
+    function toggleRow(el) {
+        let row = el.closest('tr');
+        let checkboxes = row.querySelectorAll('.perm-checkbox');
+        checkboxes.forEach(cb => cb.checked = el.checked);
+    }
 
-// Full row select
-function toggleRow(el) {
-    let row = el.closest('tr');
-    let checkboxes = row.querySelectorAll('.perm-checkbox');
+    // Individual → sync row checkbox
+    function syncRow(el) {
+        let row = el.closest('tr');
+        let all = row.querySelectorAll('.perm-checkbox');
+        let checked = row.querySelectorAll('.perm-checkbox:checked');
+        let rowCheckbox = row.querySelector('.row-checkbox');
 
-    checkboxes.forEach(cb => cb.checked = el.checked);
-}
+        if (rowCheckbox) {
+            rowCheckbox.checked = (all.length > 0 && all.length === checked.length);
+        }
+    }
 
-// Individual → sync row checkbox
-function syncRow(el) {
-    let row = el.closest('tr');
-    let all = row.querySelectorAll('.perm-checkbox');
-    let checked = row.querySelectorAll('.perm-checkbox:checked');
-    let rowCheckbox = row.querySelector('.row-checkbox');
-
-    rowCheckbox.checked = (all.length === checked.length);
-}
-
+    // Initialize state on load
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.row-checkbox').forEach(rowCheckbox => {
+            let row = rowCheckbox.closest('tr');
+            let all = row.querySelectorAll('.perm-checkbox');
+            let checked = row.querySelectorAll('.perm-checkbox:checked');
+            rowCheckbox.checked = (all.length > 0 && all.length === checked.length);
+        });
+    });
 </script>
-
 @endsection
